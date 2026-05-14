@@ -1,0 +1,803 @@
+/* Load local Fjord One font */
+@font-face {
+  font-family: 'Fjord One';
+  src: url('FjordOne-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Load local La Belle Aurore font */
+@font-face {
+  font-family: 'La Belle Aurore';
+  src: url('LaBelleAurore-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   Design System
+   ============================================================ */
+
+/* Spacing scale: 8, 12, 16, 24, 32, 48, 64, 96 */
+:root {
+  --space-8:  8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-96: 96px;
+
+  --max-width: 1200px;
+  --pad-desktop: 80px;
+  --pad-tablet:  48px;
+  --pad-mobile:  24px;
+
+  --radius-card: 20px;
+  --radius-pill: 100px;
+
+  /* Typography */
+  --font-serif: 'Fjord One', Georgia, serif;
+  --font-hand: 'La Belle Aurore', cursive;
+  --font-sans: 'Fjord One', Georgia, serif;
+  --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-body: 17px;
+  --font-size-small: 14px;
+  --line-height-body: 1.6;
+
+  /* Colors */
+  --color-bg:          #fafaf8;
+  --color-surface:     #ffffff;
+  --color-ink-primary: #111110;
+  --color-ink-secondary: #6b6b6b;
+  --color-ink-tertiary: #a0a0a0;
+  --color-accent:      #d97b6c;
+  --color-border:      rgba(0, 0, 0, 0.07);
+
+  /* Shadows — soft and minimal */
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.05);
+  --shadow-card-hover: 0 2px 8px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.08);
+}
+
+/* ============================================================
+   Reset & Base
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-ink-primary);
+  background-color: var(--color-bg);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img { display: block; max-width: 100%; }
+
+/* ============================================================
+   Layout Container
+   ============================================================ */
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: var(--pad-desktop);
+  padding-right: var(--pad-desktop);
+}
+
+/* ============================================================
+   Sections
+   ============================================================ */
+
+.section {
+  padding-top: var(--space-96);
+  padding-bottom: var(--space-96);
+}
+
+/* ============================================================
+   Navigation
+   ============================================================ */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(250, 250, 248, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-16);
+}
+
+.nav__logo {
+  display: flex;
+  align-items: center;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.nav__logo:hover { opacity: 1; }
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-32);
+}
+
+.nav__link {
+  font-size: 18px;
+  font-family: var(--font-hand);
+  color: var(--color-ink-secondary);
+  letter-spacing: 0.01em;
+  transition: color 0.2s ease;
+}
+
+.nav__link:hover { color: var(--color-ink-primary); }
+
+/* ============================================================
+   Hero
+   ============================================================ */
+
+.hero {
+  padding-top: var(--space-96);
+  padding-bottom: var(--space-96);
+}
+
+.hero__content {
+  max-width: 900px;
+}
+
+.hero__bio {
+  font-size: clamp(26px, 2.8vw, 32px);
+  line-height: 1.65;
+  letter-spacing: -0.04em;
+  color: var(--color-ink-primary);
+  font-weight: 400;
+}
+
+.hero__bio--secondary {
+  margin-top: var(--space-16);
+  color: var(--color-ink-secondary);
+}
+
+.hero__underline {
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 0, 0, 0.2);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+
+.hero__highlight {
+  position: relative;
+  color: var(--color-ink-primary);
+  font-family: inherit;
+  font-style: normal;
+  font-size: inherit;
+  display: inline;
+  isolation: isolate;
+}
+
+.hero__highlight-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 300%;
+  height: 500%;
+  background: radial-gradient(ellipse, rgba(255, 140, 185, 0.42) 0%, rgba(255, 170, 205, 0.22) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  filter: blur(28px);
+  opacity: 1;
+  transition:
+    transform 2.4s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 2.4s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 2.4s ease;
+}
+
+.hero__location {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin-top: var(--space-24);
+  font-family: var(--font-hand);
+  font-size: 22px;
+  color: var(--color-ink-secondary);
+}
+
+.hero__company {
+  display: inline-flex;
+  align-items: center;
+}
+
+.hero__company-icon {
+  display: inline-block;
+  vertical-align: middle;
+  height: 26px;
+  width: auto;
+}
+
+/* ============================================================
+   Projects Grid
+   ============================================================ */
+
+.projects__grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+}
+
+/* ============================================================
+   Card
+   ============================================================ */
+
+.card {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+.card__link {
+  display: block;
+}
+
+/* Card media area */
+.card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1024 / 642;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+}
+
+/* Instagram card — image IS the card, strip background but keep shadow */
+.card[data-index="0"] {
+  background: transparent;
+  box-shadow: var(--shadow-card);
+}
+
+.card[data-index="0"]:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* ---- Instagram card ---- */
+.card__media--instagram {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  aspect-ratio: unset; /* let the image define the height */
+}
+
+.card__media--instagram .ig__bg-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: scale(1.14);
+  transform-origin: center center;
+}
+
+/* IG logo */
+.ig__logo {
+  position: absolute;
+  left: var(--space-64);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+/* Handwritten tagline */
+.ig__tagline {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-20%, -50%);
+  font-family: var(--font-hand);
+  font-size: 22px;
+  line-height: 1.5;
+  color: #2a1a3a;
+  z-index: 2;
+  max-width: 260px;
+}
+
+/* UI wireframe mockup */
+.ig__mockup {
+  position: absolute;
+  right: -24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 260px;
+  background: rgba(240, 240, 244, 0.7);
+  border-radius: 16px;
+  padding: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  z-index: 2;
+  backdrop-filter: blur(2px);
+}
+
+.ig__mock-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.ig__mock-header {
+  gap: var(--space-12);
+}
+
+.ig__mock-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(180,180,190,0.5);
+  flex-shrink: 0;
+}
+
+.ig__mock-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.ig__mock-line {
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(180,180,190,0.5);
+}
+
+.ig__mock-line--name  { width: 70%; }
+.ig__mock-line--sub   { width: 45%; }
+.ig__mock-line--caption { width: 90%; }
+.ig__mock-line--short { width: 55%; }
+
+.ig__mock-image {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  background: rgba(180,180,190,0.4);
+}
+
+.ig__mock-actions {
+  gap: var(--space-8);
+}
+
+.ig__mock-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: rgba(180,180,190,0.5);
+  flex-shrink: 0;
+}
+
+.ig__scrim {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 96px;
+  background: linear-gradient(to top, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.38) 20%, rgba(0,0,0,0.18) 45%, rgba(0,0,0,0.05) 68%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Fox card — image IS the card, strip background but keep shadow */
+.card[data-index="1"] {
+  background: transparent;
+  box-shadow: var(--shadow-card);
+  overflow: visible;
+}
+
+.card[data-index="1"]:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* ---- Fox card ---- */
+.card__media--fox {
+  position: relative;
+  overflow: visible;
+  aspect-ratio: unset;
+}
+
+.fox__bg-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: scale(1.12);
+  transform-origin: center center;
+  border-radius: var(--radius-card);
+}
+
+.card-wrapper {
+  position: relative;
+}
+
+.card-wrapper--fox,
+.card-wrapper--instagram {
+  padding-bottom: 5%;
+}
+
+.fox__letter {
+  position: absolute;
+  width: 36%;
+  bottom: -12%;
+  right: -8%;
+  transform: rotate(6deg);
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.22));
+  pointer-events: none;
+  z-index: 10;
+}
+
+.card__media-content--fox {
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--space-16);
+  padding: var(--space-48);
+}
+
+.card__brand {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.card__city-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(to top, rgba(15,10,35,0.8) 0%, transparent 100%);
+}
+
+.card__note {
+  position: absolute;
+  right: var(--space-48);
+  bottom: var(--space-32);
+  width: 200px;
+  transform: rotate(-2deg);
+}
+
+.card__note-inner {
+  background: #ffffff;
+  border-radius: var(--space-8);
+  padding: var(--space-12) var(--space-16);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+.card__note-inner::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 28px;
+  height: 14px;
+  background: #e53935;
+  border-radius: 2px;
+}
+
+.card__note-inner::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 28px;
+  height: 14px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(255,255,255,0.5) 4px,
+    rgba(255,255,255,0.5) 6px
+  );
+  border-radius: 2px;
+}
+
+.card__note-text {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-ink-primary);
+  font-family: var(--font-hand);
+}
+
+/* ---- Letterboxd card ---- */
+.card__media--letterboxd {
+  background: #1a1a1a;
+  position: relative;
+}
+
+.card__media-content--letterboxd {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-24);
+  padding: var(--space-48);
+}
+
+.card__circles {
+  display: flex;
+  gap: -16px;
+  position: relative;
+  z-index: 2;
+}
+
+.card__circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-left: -20px;
+  opacity: 0.9;
+}
+
+.card__circle:first-child { margin-left: 0; }
+.card__circle--orange { background: #f97316; }
+.card__circle--green  { background: #22c55e; }
+.card__circle--blue   { background: #38bdf8; }
+
+.card__film-strip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  display: flex;
+  gap: var(--space-8);
+  padding: var(--space-8);
+  overflow: hidden;
+  opacity: 0.25;
+}
+
+.card__film-frame {
+  flex: 1;
+  height: 100%;
+  background: rgba(255,255,255,0.3);
+  border-radius: 4px;
+  min-width: 0;
+}
+
+/* Card overlay footer — label pill inside the media area */
+.card__overlay-footer {
+  position: absolute;
+  bottom: var(--space-24);
+  left: var(--space-24);
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  z-index: 3;
+}
+
+/* Card footer — REMOVED (labels now live inside cards) */
+
+.card__label {
+  font-size: var(--font-size-small);
+  font-weight: 500;
+  font-family: var(--font-ui);
+  color: var(--color-ink-primary);
+  padding: var(--space-8) var(--space-12);
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.01em;
+}
+
+.card__label--dark {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.25);
+  color: #ffffff;
+}
+
+.card__dot {
+  color: var(--color-ink-tertiary);
+  font-size: var(--font-size-small);
+}
+
+.card__dot--dark  { color: rgba(255,255,255,0.6); }
+
+.card__year {
+  font-size: var(--font-size-small);
+  color: var(--color-ink-tertiary);
+}
+
+.card__year--dark { color: rgba(255,255,255,0.6); }
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.footer {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-48);
+  padding-bottom: var(--space-48);
+}
+
+.footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer__text {
+  font-size: var(--font-size-small);
+  color: var(--color-ink-tertiary);
+}
+
+.footer__link {
+  font-size: var(--font-size-small);
+  color: var(--color-ink-secondary);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.footer__link:hover { color: var(--color-ink-primary); }
+
+/* ============================================================
+   Responsive — Tablet (≤ 1024px)
+   ============================================================ */
+
+@media (max-width: 1024px) {
+  .container {
+    padding-left: var(--pad-tablet);
+    padding-right: var(--pad-tablet);
+  }
+
+  .card__ig-logo {
+    left: var(--space-32);
+  }
+
+  .card__tagline {
+    right: var(--space-32);
+    max-width: 200px;
+    font-size: 16px;
+  }
+
+  .card__note {
+    right: var(--space-32);
+    bottom: var(--space-24);
+    width: 180px;
+  }
+
+  .card__media-content--fox {
+    padding: var(--space-32);
+  }
+}
+
+/* ============================================================
+   Responsive — Mobile (≤ 768px)
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .container {
+    padding-left: var(--pad-mobile);
+    padding-right: var(--pad-mobile);
+  }
+
+  .section {
+    padding-top: var(--space-64);
+    padding-bottom: var(--space-64);
+  }
+
+  .hero {
+    padding-top: var(--space-64);
+    padding-bottom: var(--space-64);
+  }
+
+  .hero__bio {
+    font-size: 24px;
+  }
+
+  .nav__links {
+    gap: var(--space-24);
+  }
+
+  .card__media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .card__ig-logo {
+    left: var(--space-24);
+    top: var(--space-24);
+    transform: none;
+  }
+
+  .card__tagline {
+    right: var(--space-24);
+    top: auto;
+    bottom: var(--space-24);
+    transform: none;
+    max-width: 180px;
+    font-size: 14px;
+  }
+
+  .card__phone-mockup {
+    display: none;
+  }
+
+  .card__brand {
+    font-size: 48px;
+  }
+
+  .card__note {
+    display: none;
+  }
+
+  .card__media-content--fox {
+    padding: var(--space-24);
+  }
+
+  .card__circle {
+    width: 72px;
+    height: 72px;
+  }
+
+  .projects__grid {
+    gap: var(--space-24);
+  }
+
+  .footer__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-16);
+  }
+}
+
+/* ============================================================
+   Reduced Motion
+   ============================================================ */
+
+#hover-cups, #hover-bridge {
+  position: fixed;
+  width: 192px;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 50;
+}
+
+#hover-cups.visible, #hover-bridge.visible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #hover-cups { transition: none; }
+  .card { transition: none; }
+  .nav__link { transition: none; }
+}
