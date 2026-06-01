@@ -694,6 +694,111 @@ function Screen2() {
   )
 }
 
+// ── Profile banner thumbnail (suite + explorations option 03) ───────────────
+const PROFILE_BANNER_W = 473
+const PROFILE_BANNER_H = 1024
+
+function ProfileBannerScreen() {
+  return (
+    <img
+      src="/suite-profile-banner.png"
+      alt="Profile banner"
+      width={PROFILE_BANNER_W}
+      height={PROFILE_BANNER_H}
+      style={{ width: PROFILE_BANNER_W, height: PROFILE_BANNER_H, display: 'block' }}
+    />
+  )
+}
+
+// ── Exploration FSI — matches explorations Option 02 reference (inline SVGs) ─
+const EXPLORATION_FSI_W = 374.751
+const FSI_BLUE = '#4a5df9'
+
+const FsiIconInstagram = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+    <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" stroke="#0c1014" strokeWidth="1.5" />
+    <circle cx="12" cy="12" r="4.25" stroke="#0c1014" strokeWidth="1.5" />
+    <circle cx="17.25" cy="6.75" r="1.1" fill="#0c1014" />
+  </svg>
+)
+
+const FsiIconProfile = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+    <circle cx="12" cy="12" r="9.5" stroke="#0c1014" strokeWidth="1.5" />
+    <circle cx="12" cy="10" r="3.25" stroke="#0c1014" strokeWidth="1.5" />
+    <path d="M6.25 18.25c.85-2.65 2.95-4.25 5.75-4.25s4.9 1.6 5.75 4.25" stroke="#0c1014" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+)
+
+function ExplorationFSIScreen({
+  headline = 'Due to laws in Australia, soon, people under 16 can no longer use social media',
+  meansBody = "You will not be able to use your Instagram account until you turn 16. This means you can't use Instagram, and your profile won't be visible to you or others until then. We'll let you know when you can use Instagram again.",
+}: {
+  headline?: string
+  meansBody?: string
+}) {
+  const S: React.CSSProperties = { fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif' }
+
+  const bullets = [
+    {
+      icon: <FsiIconInstagram />,
+      title: "What's happening",
+      body: 'Due to laws in Australia, people under 16 will no longer be able to use social media, including Instagram.',
+    },
+    {
+      icon: <FsiIconProfile />,
+      title: 'What this means for you',
+      body: meansBody,
+    },
+  ]
+
+  return (
+    <div style={{ ...S, width: EXPLORATION_FSI_W, height: 812, display: 'flex', flexDirection: 'column', background: '#fff' }}>
+      <div style={{ height: 52, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px', flexShrink: 0 }}>
+        <span style={{ fontSize: 16.4, fontWeight: 600, color: '#0c1014', letterSpacing: '-0.3px' }}>5:26</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="#0c1014"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5" width="3" height="7" rx="0.8"/><rect x="10" y="2" width="3" height="10" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><circle cx="8" cy="10.8" r="1.2" fill="#0c1014"/><path d="M4.8 7.4a4.5 4.5 0 0 1 6.4 0" stroke="#0c1014" strokeWidth="1.3" strokeLinecap="round"/><path d="M2 4.6a8 8 0 0 1 12 0" stroke="#0c1014" strokeWidth="1.3" strokeLinecap="round"/></svg>
+          <svg width="26" height="13" viewBox="0 0 26 13" fill="none"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#0c1014" strokeOpacity="0.35" strokeWidth="1"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#0c1014"/><path d="M23.5 4.5v4a2 2 0 0 0 0-4Z" fill="#0c1014" opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div style={{ height: 44, display: 'flex', alignItems: 'center', padding: '0 16px', flexShrink: 0 }}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0c1014" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </div>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+        <div style={{ padding: '8px 24px 20px', flexShrink: 0 }}>
+          <p style={{ margin: 0, fontWeight: 700, fontSize: 24, lineHeight: '30px', letterSpacing: '0.07px', color: '#000', textAlign: 'left' }}>
+            {headline}
+          </p>
+        </div>
+        {bullets.map(({ icon, title, body }) => (
+          <div key={title} style={{ display: 'flex', gap: 12, padding: '10px 24px', alignItems: 'flex-start', flexShrink: 0 }}>
+            <div style={{ flexShrink: 0, width: 24, height: 24 }}>{icon}</div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ margin: 0, fontWeight: 600, fontSize: 14, lineHeight: '18px', letterSpacing: '-0.15px', color: '#0c1014' }}>{title}</p>
+              <p style={{ margin: '4px 0 0', fontSize: 13.5, lineHeight: '17.4px', letterSpacing: '-0.14px', color: '#0c1014' }}>{body}</p>
+            </div>
+          </div>
+        ))}
+        <div style={{ flex: 1, minHeight: 24 }} />
+        <div style={{ padding: '8px 16px 0', flexShrink: 0 }}>
+          <div style={{ background: FSI_BLUE, borderRadius: 8, padding: '12px 16px', display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+            <span style={{ fontWeight: 600, fontSize: 14, color: '#fff', letterSpacing: '-0.15px' }}>See next steps</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', paddingBottom: 8 }}>
+            <span style={{ fontWeight: 600, fontSize: 14, color: FSI_BLUE, letterSpacing: '-0.15px' }}>{"I'm 16 or over"}</span>
+          </div>
+        </div>
+        <div style={{ height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <div style={{ width: 130, height: 5, borderRadius: 100, background: '#0c1014' }} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── Age verification bottom sheet (Figma node 2824:192907) ──────────────
 // ── "Choose how you want to confirm your age" full sheet (Figma node 2824:178563) ──
 function Screen6AgeMethodPicker({ visible }: { visible: boolean }) {
@@ -3434,20 +3539,21 @@ function SketchBCard() {
     setCursorTop(52);
     setCursorVis(false);
 
-    // Small pause, then show cursor at top
-    t.push(setTimeout(() => setCursorVis(true), 300));
-    // Begin slow drift toward button (~75.7% = y=227 in viewBox 300)
-    t.push(setTimeout(() => setCursorTop(75.7), 500));
-    // Cursor arrives (~2.3s movement), start fade
-    t.push(setTimeout(() => setFading(true), 3000));
-    // Switch screen, hide cursor
+    const CURSOR_IN = 500;
+    const CURSOR_MOVE = 900;
+    const FADE_AT = 6200;       // after slow drift + beat on "See next steps"
+    const STEP2_AT = 6700;
+    const HOLD_STEP2 = 10500; // linger on steps screen before looping back
+
+    t.push(setTimeout(() => setCursorVis(true), CURSOR_IN));
+    t.push(setTimeout(() => setCursorTop(75.7), CURSOR_MOVE));
+    t.push(setTimeout(() => setFading(true), FADE_AT));
     t.push(setTimeout(() => {
       setStep(1);
       setFading(false);
       setCursorVis(false);
-    }, 3360));
-    // Hold screen 2, then loop
-    t.push(setTimeout(runCycle, 6000));
+    }, STEP2_AT));
+    t.push(setTimeout(runCycle, STEP2_AT + HOLD_STEP2));
   }, []);
 
   React.useEffect(() => {
@@ -3478,7 +3584,7 @@ function SketchBCard() {
 
       {/* SVG + cursor overlay */}
       <div style={{ position: 'relative' }}>
-        <div style={{ opacity: fading ? 0 : 1, transition: 'opacity 0.36s ease' }}>
+        <div style={{ opacity: fading ? 0 : 1, transition: 'opacity 0.55s ease' }}>
           {step === 0 ? (
             <svg viewBox="0 0 160 300" style={{ width: '100%', display: 'block', fontFamily: 'Inter, sans-serif' }}>
               <rect x="16" y="6" width="128" height="288" rx="18" fill="#faf8fd" stroke="#c8bedd" strokeWidth="0.75"/>
@@ -3537,13 +3643,13 @@ function SketchBCard() {
           background: 'rgba(106,80,168,0.08)',
           backdropFilter: 'blur(1px)',
           opacity: cursorVis ? 1 : 0,
-          transition: `top 2.5s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease`,
+          transition: `top 3.8s cubic-bezier(0.35,0,0.15,1), opacity 0.5s ease`,
           pointerEvents: 'none',
         }} />
       </div>
 
       <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 12.5, lineHeight: 1.65, color: '#7a6e82', margin: 0 }}>
-        One QP CTA for everyone; the next screen carries the burden of separation. Under-16 steps are primary, with an "If you're 16 or over" escape at the bottom.
+        One QP CTA for everyone with the next screen having headers to delineate the options. This was less ideal from a design perspective but much easier to build from an eng POV which seemed like an attractive option given the tight timeline.
       </p>
     </div>
   );
@@ -3554,12 +3660,8 @@ function SuiteSection() {
   const ff  = 'system-ui, -apple-system, sans-serif';
   const PH_W = 112, PH_H = 224;
 
-  // ── Stage state + countdown ────────────────────────────────────────────
-  const stageDays = [14, 7, 0];
-  const [stage, setStage]               = React.useState(0);
-  const [displayDays, setDisplayDays]   = React.useState(14);
+  const [stage, setStage] = React.useState(0);
   const [screensVisible, setScreensVisible] = React.useState(true);
-  const countRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ── Purple cursor over phones (scoped to hover zone; no fixed viewport bleed) ──
   const [hoveringScreens, setHoveringScreens] = React.useState(false);
@@ -3601,32 +3703,18 @@ function SuiteSection() {
     return () => { if (dotRaf.current) cancelAnimationFrame(dotRaf.current); dotRaf.current = null; };
   }, [hoveringScreens]);
 
-  React.useEffect(() => () => { if (countRef.current) clearTimeout(countRef.current); }, []);
-
   const goToStage = (i: number) => {
     if (i === stage) return;
-    const from = stageDays[stage];
-    const to   = stageDays[i];
     setScreensVisible(false);
-    if (countRef.current) clearTimeout(countRef.current);
-    const diff  = Math.abs(from - to);
-    const delay = Math.max(25, Math.min(65, 420 / diff));
-    const dir   = to < from ? -1 : 1;
-    let cur = from;
-    const tick = () => {
-      cur += dir;
-      setDisplayDays(cur);
-      if (cur !== to) { countRef.current = setTimeout(tick, delay); }
-      else { setStage(i); setTimeout(() => setScreensVisible(true), 80); }
-    };
-    countRef.current = setTimeout(tick, 60);
+    setStage(i);
+    setTimeout(() => setScreensVisible(true), 80);
   };
 
   // ── Rationale copy ─────────────────────────────────────────────────────
   const rationale = [
-    "Given teens could lose access for up to three years, we front-loaded the communication. Two weeks was the earliest we could technically reach them. A Quick Prompt in the feed starts soft — contextual and skippable — while SMS, email, in-app nudges, and a persistent profile banner extend reach across every surface. No urgency, no pressure: just notification.",
-    "One week out, we escalated to a dismissable full-screen interstitial — more surface area, harder to overlook, but teens still have a way past it. We deliberately stripped back the multi-channel push: by now they've been informed, and repeating every surface would feel punitive. The profile banner persists through to the end.",
-    "On the day the law takes effect, the interstitial becomes non-dismissable. No scroll-past, no \"I'll deal with it later.\" Access is fully gated until the user works through the steps flow — the moment the whole escalation arc was building toward.",
+    "Given that we were opting for increased urgency in our communications to avoid an oversaturation effect, we opted for a soft quick prompt for 2 weeks out. It wouldn't be missed since it appeared on the home page which is a visually prominent location. But it also struck a nice balance for an initial touchpoint as users do not need to interact with the messaging at any point yet.",
+    "Now that we're one week out, we increased the aggressiveness of the approach to a dismissable full-screen interstitial. Teens would now either need to tap \"See next steps\" or 'X' out of this interstitial completely. With our increasingly aggressive approach, it was also apt that there was more surface area to introduce more critical information without hiding it behind an additional click.",
+    "On the day the law takes effect, the interstitial becomes non-dismissable. Access is fully gated unless they are able to age verify and prove that they are 16 or older.",
   ];
 
   const mk = (url: string, sz = 24): React.CSSProperties => ({
@@ -3892,59 +3980,91 @@ function SuiteSection() {
   const stageTags   = ['First touch', 'Escalation', 'D-day'];
 
   return (
-    <div style={{ marginTop: 32 }}>
+    <div style={{ marginTop: 0 }}>
 
-      {/* ── Countdown header ── */}
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 40, marginBottom: 28 }}>
-        {/* Big number */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flexShrink: 0, minWidth: 80 }}>
-          <span style={{
-            fontFamily: "'Georgia', 'Times New Roman', serif",
-            fontSize: 72, lineHeight: 1, letterSpacing: '-0.04em',
-            color: displayDays === 0 ? '#c0392b' : '#1a1614',
-            transition: 'color 0.4s ease',
-            fontVariantNumeric: 'tabular-nums',
-          }}>
-            {displayDays === 0 ? '0' : displayDays}
-          </span>
-          <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, color: displayDays === 0 ? '#c0392b' : '#9b8ea0', letterSpacing: '0.06em', textTransform: 'uppercase' as const, marginTop: 4, transition: 'color 0.4s ease' }}>
-            {displayDays === 0 ? 'ban in effect' : displayDays === 1 ? 'day remaining' : 'days remaining'}
-          </span>
-        </div>
-
-        {/* Stage selector — horizontal timeline */}
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', paddingBottom: 8 }}>
-          {stageLabels.map((label, i) => (
-            <React.Fragment key={i}>
-              <button
-                onClick={() => goToStage(i)}
-                style={{
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
-                  background: 'none', border: 'none', cursor: 'pointer', padding: 0, flexShrink: 0,
-                }}
-              >
-                <div style={{
-                  width: 10, height: 10, borderRadius: '50%',
-                  background: stage === i ? '#9b8ea0' : '#e0d8e4',
-                  border: `2px solid ${stage === i ? '#9b8ea0' : '#e0d8e4'}`,
-                  transition: 'all 0.3s ease',
-                  boxShadow: stage === i ? '0 0 0 3px rgba(155,142,160,0.18)' : 'none',
-                }} />
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                  <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: stage === i ? '#9b8ea0' : '#c4bcc8', transition: 'color 0.3s' }}>
-                    {stageTags[i]}
-                  </span>
-                  <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: stage === i ? 600 : 400, color: stage === i ? '#1a1614' : '#b0a8ba', transition: 'color 0.3s', whiteSpace: 'nowrap' as const }}>
-                    {label}
-                  </span>
-                </div>
-              </button>
-              {i < stageLabels.length - 1 && (
-                <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, rgba(155,142,160,0.3), rgba(155,142,160,0.15))', margin: '0 8px', marginBottom: 28 }} />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
+      {/* Milestone selector */}
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 24 }}>
+          {stageLabels.map((label, i) => {
+            const active = stage === i
+            return (
+              <React.Fragment key={label}>
+                <button
+                  type="button"
+                  onClick={() => goToStage(i)}
+                  aria-pressed={active}
+                  aria-label={`${label} — ${stageTags[i]}`}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 6,
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '6px 10px',
+                    borderRadius: 8,
+                    flexShrink: 0,
+                    transition: 'background 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!active) e.currentTarget.style.background = 'rgba(155,142,160,0.07)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent'
+                  }}
+                >
+                  <div
+                    style={{
+                      width: active ? 10 : 8,
+                      height: active ? 10 : 8,
+                      borderRadius: '50%',
+                      background: active ? '#9b8ea0' : 'transparent',
+                      border: `2px solid ${active ? '#9b8ea0' : '#d4ccd8'}`,
+                      transition: 'all 0.25s ease',
+                      boxShadow: active ? '0 0 0 3px rgba(155,142,160,0.14)' : 'none',
+                    }}
+                  />
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                    <span
+                      style={{
+                        fontFamily: 'Inter, sans-serif',
+                        fontSize: 9,
+                        fontWeight: 700,
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase' as const,
+                        color: active ? '#9b8ea0' : '#c4bcc8',
+                        transition: 'color 0.25s ease',
+                      }}
+                    >
+                      {stageTags[i]}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'Inter, sans-serif',
+                        fontSize: 11,
+                        fontWeight: active ? 600 : 400,
+                        color: active ? '#1a1614' : '#b0a8ba',
+                        whiteSpace: 'nowrap' as const,
+                        transition: 'color 0.25s ease, font-weight 0.2s ease',
+                      }}
+                    >
+                      {label}
+                    </span>
+                  </div>
+                </button>
+                {i < stageLabels.length - 1 && (
+                  <div
+                    style={{
+                      flex: 1,
+                      height: 1,
+                      background: 'linear-gradient(90deg, rgba(155,142,160,0.28), rgba(155,142,160,0.12))',
+                      margin: '0 4px',
+                    }}
+                  />
+                )}
+              </React.Fragment>
+            )
+          })}
       </div>
 
       {/* ── Rationale ── */}
@@ -4080,7 +4200,9 @@ function SuiteSection() {
           {/* Profile banner */}
           <div style={{ flexShrink: 0 }}>
             <Shell>
-              <img src="/suite-profile-banner.png" alt="Profile banner" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+              <Scaled nW={PROFILE_BANNER_W}>
+                <ProfileBannerScreen />
+              </Scaled>
             </Shell>
             <Lbl t="Profile banner" />
           </div>
@@ -4095,44 +4217,8 @@ function SuiteSection() {
           {/* Dismissable full-screen interstitial */}
           <div style={{ flexShrink: 0 }}>
             <Shell>
-              <Scaled nW={374.751}>
-                <div style={{ width: 374.751, height: 812, display: 'flex', flexDirection: 'column', background: '#fff', fontFamily: ff }}>
-                  <div style={{ height: 51.889, display: 'flex', alignItems: 'center', padding: '0 15.37px', justifyContent: 'space-between', flexShrink: 0 }}>
-                    <span style={{ fontWeight: 600, fontSize: 16.34, color: '#0c1014' }}>5:26</span>
-                    <img src="https://www.figma.com/api/mcp/asset/24d7a85a-800f-4b4a-a308-8d9cf868e63d" alt="" style={{ height: 12.492 }} />
-                  </div>
-                  <div style={{ height: 42.28, display: 'flex', alignItems: 'center', padding: '0 15.37px', flexShrink: 0 }}>
-                    <div style={{ width: 23.062, height: 23.062, background: '#0c1014', WebkitMaskImage: `url('https://www.figma.com/api/mcp/asset/2e2cab6b-6b3c-46d8-b922-2e85e9ff66a3')`, maskImage: `url('https://www.figma.com/api/mcp/asset/2e2cab6b-6b3c-46d8-b922-2e85e9ff66a3')`, WebkitMaskSize: '23px 23px', maskSize: '23px 23px', WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat' }} />
-                  </div>
-                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-                    <div style={{ padding: '28px 32px', textAlign: 'center', flexShrink: 0 }}>
-                      <p style={{ margin: 0, fontWeight: 700, fontSize: 24, lineHeight: '30px', color: '#000' }}>Due to laws in Australia, in 1 week people under 16 will no longer be able to use social media</p>
-                    </div>
-                    {[
-                      { title: "What's happening", body: "Due to laws in Australia, people under 16 will no longer be able to use social media, including Instagram." },
-                      { title: "What this means for you", body: "You will not be able to use your Instagram account until you turn 16. Your profile won't be visible to you or others." },
-                    ].map(({ title, body }) => (
-                      <div key={title} style={{ display: 'flex', gap: 11.531, padding: '11.531px 23.062px', alignItems: 'flex-start', flexShrink: 0 }}>
-                        <div style={{ flex: 1 }}>
-                          <p style={{ margin: 0, fontWeight: 600, fontSize: 14, lineHeight: '18px', color: '#0c1014' }}>{title}</p>
-                          <p style={{ margin: '2px 0 0', fontSize: 13.453, lineHeight: '17.296px', color: '#0c1014' }}>{body}</p>
-                        </div>
-                      </div>
-                    ))}
-                    <div style={{ flex: 1 }} />
-                    <div style={{ padding: '15.37px', flexShrink: 0 }}>
-                      <div style={{ background: '#4a5df9', borderRadius: 8, padding: '12.492px', display: 'flex', justifyContent: 'center', marginBottom: 13.45 }}>
-                        <span style={{ fontWeight: 600, fontSize: 13.45, color: '#fff' }}>See next steps</span>
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <span style={{ fontWeight: 600, fontSize: 13.45, color: '#4a5df9' }}>{"I'm 16 or over"}</span>
-                      </div>
-                    </div>
-                    <div style={{ height: 32.671, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <div style={{ width: 128.761, height: 4.805, borderRadius: 100, background: '#0c1014' }} />
-                    </div>
-                  </div>
-                </div>
+              <Scaled nW={EXPLORATION_FSI_W}>
+                <ExplorationFSIScreen headline="Due to laws in Australia, in 1 week, people under 16 will no longer be able to use social media" />
               </Scaled>
             </Shell>
             <Lbl t="Full-screen interstitial" />
@@ -4141,7 +4227,9 @@ function SuiteSection() {
           {/* Profile banner */}
           <div style={{ flexShrink: 0 }}>
             <Shell>
-              <img src="/suite-profile-banner.png" alt="Profile banner" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+              <Scaled nW={PROFILE_BANNER_W}>
+                <ProfileBannerScreen />
+              </Scaled>
             </Shell>
             <Lbl t="Profile banner" />
           </div>
@@ -4194,7 +4282,9 @@ function SuiteSection() {
           {/* Profile banner */}
           <div style={{ flexShrink: 0 }}>
             <Shell>
-              <img src="/suite-profile-banner.png" alt="Profile banner" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+              <Scaled nW={PROFILE_BANNER_W}>
+                <ProfileBannerScreen />
+              </Scaled>
             </Shell>
             <Lbl t="Profile banner" />
           </div>
@@ -4986,19 +5076,18 @@ export default function InstagramCaseStudy({ onBack }: Props) {
 
         {/* ── Explorations ── */}
         <section className="py-16 border-t border-black/[0.07]">
-          {/* Title + intro — two-col */}
-          <div className="grid grid-cols-2 gap-16 items-start mb-14">
-            <h2 className="font-serif text-[clamp(22px,2.4vw,30px)] leading-snug tracking-[-0.03em] text-ink-primary">
-              Explorations for entry points on how to communicate the social media ban to teens
-            </h2>
-            <p className="font-inter text-[15px] leading-relaxed text-ink-secondary">
-              The first significant round of explorations we did was to figure out the entry points for informing teens about the social media ban and the actions they can take.
-            </p>
-          </div>
+          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: '#9b8ea0', marginBottom: 10 }}>
+            Design decision 01
+          </p>
+          <h2 className="font-serif" style={{ fontSize: 28, lineHeight: 1.25, letterSpacing: '-0.03em', color: '#1a1614', margin: '0 0 16px' }}>
+            Explorations for entry points on how to communicate the social media ban to teens
+          </h2>
+          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 15, lineHeight: 1.75, color: '#5e5660', margin: '0 0 36px', maxWidth: 560 }}>
+            The first significant round of explorations we did was to figure out the entry points for informing teens about the social media ban and the actions they can take.
+          </p>
 
           {/* Three exploration options */}
           {(() => {
-            const ff = 'system-ui, -apple-system, sans-serif';
             const cardS: React.CSSProperties = { borderRadius: 16, border: '1px solid rgba(155,130,200,0.18)', padding: '20px 16px 18px', background: 'linear-gradient(150deg, rgba(244,240,251,0.65) 0%, rgba(250,247,244,1) 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center' };
             const optLabel: React.CSSProperties = { fontFamily: 'Inter, sans-serif', fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#b0a8b4', display: 'block', marginBottom: 14, textAlign: 'center' };
             const titleS: React.CSSProperties = { fontSize: 14, lineHeight: 1.35, letterSpacing: '-0.02em', color: '#1a1614', marginTop: 12, marginBottom: 8, textAlign: 'center' };
@@ -5019,24 +5108,8 @@ export default function InstagramCaseStudy({ onBack }: Props) {
                 </p>
               </div>
             );
-            const mk = (url: string, sz = 24) => ({ background: '#0c1014', WebkitMaskImage: `url('${url}')`, maskImage: `url('${url}')`, WebkitMaskSize: `${sz}px ${sz}px`, maskSize: `${sz}px ${sz}px`, WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat' } as React.CSSProperties);
-
-            // ── FSI assets ──
-            const fsiLevels   = 'https://www.figma.com/api/mcp/asset/24d7a85a-800f-4b4a-a308-8d9cf868e63d';
-            const fsiClose    = 'https://www.figma.com/api/mcp/asset/2e2cab6b-6b3c-46d8-b922-2e85e9ff66a3';
-            const fsiSettings = 'https://www.figma.com/api/mcp/asset/5892e9e5-4e3f-44a4-8571-b011cb0da649';
-            const fsiUsers    = 'https://www.figma.com/api/mcp/asset/e0b39711-54d6-4c7e-b6b8-2b1af42cebb7';
-            const FSI_W = 374.751; const fS = 160 / FSI_W;
-
-            // ── Profile banner assets ──
-            const bnLevels    = 'https://www.figma.com/api/mcp/asset/db5c2604-c45e-4aae-a7a1-960dd5d3f8b8';
-            const bnNewPost   = 'https://www.figma.com/api/mcp/asset/e3646081-4da6-46d4-b826-8b3a55a6dcb2';
-            const bnMenu      = 'https://www.figma.com/api/mcp/asset/38806a87-14c2-4798-bcb5-3083cce94ec1';
-            const bnRing      = 'https://www.figma.com/api/mcp/asset/d7c2c3cf-32bc-489b-b676-c67b9e3b0cc4';
-            const bnPeople    = 'https://www.figma.com/api/mcp/asset/2e224c43-ef47-49fe-8df8-333d8d4598af';
-            const bnGridIcon  = 'https://www.figma.com/api/mcp/asset/8130c8d2-e462-4158-afca-c8824e6803a5';
-            const bnPhotos    = ['https://www.figma.com/api/mcp/asset/9d3a600e-5dca-4fbe-b906-3a452750101c','https://www.figma.com/api/mcp/asset/b3ef96a0-644d-443d-b359-67025d744f52','https://www.figma.com/api/mcp/asset/d75a3a6e-6949-4864-9d6b-35bf1f0a1e19','https://www.figma.com/api/mcp/asset/38a57af9-9755-4dde-a02c-4d5bdc1c7ef4','https://www.figma.com/api/mcp/asset/511f6fbe-dd82-4ffb-a9a5-f258854dff94','https://www.figma.com/api/mcp/asset/72260491-2d64-446b-9ae7-d828a02cca0f'];
-            const BW = 375.213; const bS = 160 / BW;
+            const fS = 160 / EXPLORATION_FSI_W
+            const fProfile = 160 / PROFILE_BANNER_W
 
             return (
               <div className="grid grid-cols-3 gap-6 mb-14">
@@ -5128,59 +5201,13 @@ export default function InstagramCaseStudy({ onBack }: Props) {
                   />
                 </div>
 
-                {/* ── Option 02: Full-screen interstitial — exact Figma values ── */}
+                {/* ── Option 02: Full-screen interstitial ── */}
                 <div style={cardS}>
                   <span style={optLabel}>Option 02</span>
                   <PhoneFrame>
                     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-                      <div style={{ width: FSI_W, transformOrigin: 'top left', transform: `scale(${fS})`, fontFamily: ff, display: 'flex', flexDirection: 'column', height: 812, background: '#fff' }}>
-                        {/* Status bar */}
-                        <div style={{ height: 51.889, display: 'flex', alignItems: 'center', padding: '0 15.37px', justifyContent: 'space-between', flexShrink: 0 }}>
-                          <span style={{ fontWeight: 600, fontSize: 16.34, color: '#0c1014' }}>5:26</span>
-                          <img src={fsiLevels} alt="" style={{ height: 12.492 }} />
-                        </div>
-                        {/* Nav bar — X close left */}
-                        <div style={{ height: 42.28, display: 'flex', alignItems: 'center', padding: '0 15.37px', flexShrink: 0 }}>
-                          <div style={{ width: 23.062, height: 23.062, ...mk(fsiClose) }} />
-                        </div>
-                        {/* Body */}
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-                          {/* Headline */}
-                          <div style={{ padding: '28px 32px', textAlign: 'center', flexShrink: 0 }}>
-                            <p style={{ margin: 0, fontWeight: 700, fontSize: 24, lineHeight: '30px', letterSpacing: '0.07px', color: '#000' }}>
-                              Due to laws in Australia, soon people under 16 will no longer be able to use social media
-                            </p>
-                          </div>
-                          {/* Bullet cells */}
-                          {([
-                            { icon: fsiSettings, title: "What's happening", body: "Due to laws in Australia, people under 16 will no longer be able to use social media, including Instagram." },
-                            { icon: fsiUsers, title: "What this means for you", body: "You will not be able to use your Instagram account until you turn 16. Your profile won't be visible to you or others." },
-                          ] as { icon: string; title: string; body: string }[]).map(({ icon, title, body }) => (
-                            <div key={title} style={{ display: 'flex', gap: 11.531, padding: '11.531px 23.062px', alignItems: 'flex-start', flexShrink: 0 }}>
-                              <div style={{ paddingTop: 7.687, flexShrink: 0 }}>
-                                <div style={{ width: 23.062, height: 23.062, ...mk(icon) }} />
-                              </div>
-                              <div style={{ flex: 1 }}>
-                                <p style={{ margin: 0, fontWeight: 600, fontSize: 14, lineHeight: '18px', letterSpacing: '-0.15px', color: '#0c1014' }}>{title}</p>
-                                <p style={{ margin: '2px 0 0', fontSize: 13.453, lineHeight: '17.296px', letterSpacing: '-0.144px', color: '#0c1014' }}>{body}</p>
-                              </div>
-                            </div>
-                          ))}
-                          <div style={{ flex: 1 }} />
-                          {/* Bottom buttons */}
-                          <div style={{ padding: '15.37px', flexShrink: 0 }}>
-                            <div style={{ background: '#4a5df9', borderRadius: 8, padding: '12.492px', display: 'flex', justifyContent: 'center', marginBottom: 13.45 }}>
-                              <span style={{ fontWeight: 600, fontSize: 13.45, color: '#fff', letterSpacing: '-0.15px' }}>See next steps</span>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                              <span style={{ fontWeight: 600, fontSize: 13.45, color: '#4a5df9', letterSpacing: '-0.15px' }}>{"I'm 16 or over"}</span>
-                            </div>
-                          </div>
-                          {/* Home affordance */}
-                          <div style={{ height: 32.671, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                            <div style={{ width: 128.761, height: 4.805, borderRadius: 100, background: '#0c1014' }} />
-                          </div>
-                        </div>
+                      <div style={{ width: EXPLORATION_FSI_W, transformOrigin: 'top left', transform: `scale(${fS})` }}>
+                        <ExplorationFSIScreen />
                       </div>
                     </div>
                   </PhoneFrame>
@@ -5191,75 +5218,13 @@ export default function InstagramCaseStudy({ onBack }: Props) {
                   />
                 </div>
 
-                {/* ── Option 03: Persistent profile banner — exact Figma values ── */}
+                {/* ── Option 03: Persistent profile banner (same as suite section) ── */}
                 <div style={cardS}>
                   <span style={optLabel}>Option 03</span>
                   <PhoneFrame>
                     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-                      <div style={{ width: BW, transformOrigin: 'top left', transform: `scale(${bS})`, fontFamily: ff, background: '#fff' }}>
-                        {/* Status bar */}
-                        <div style={{ height: 51.953, display: 'flex', alignItems: 'center', padding: '0 15.39px', justifyContent: 'space-between' }}>
-                          <span style={{ fontWeight: 600, fontSize: 16.36, color: '#000' }}>5:26</span>
-                          <img src={bnLevels} alt="" style={{ height: 12.507 }} />
-                        </div>
-                        {/* Nav bar */}
-                        <div style={{ height: 48.104, background: '#fff', position: 'relative' }}>
-                          <p style={{ position: 'absolute', left: 15.39, bottom: 11, margin: 0, fontWeight: 700, fontSize: 22.21, lineHeight: '27.768px', color: '#000', letterSpacing: '0.067px', whiteSpace: 'nowrap' }}>
-                            Sunflower_power
-                          </p>
-                          <div style={{ position: 'absolute', right: 15.39, top: '50%', transform: 'translateY(-50%)', display: 'flex', gap: 23.09, alignItems: 'center' }}>
-                            <div style={{ width: 23.09, height: 23.09, ...mk(bnNewPost) }} />
-                            <div style={{ width: 23.09, height: 23.09, ...mk(bnMenu) }} />
-                          </div>
-                        </div>
-                        {/* Banner strip */}
-                        <div style={{ borderTop: '0.481px solid #dbdfe4', borderBottom: '0.481px solid #dbdfe4', paddingTop: 11.545, paddingBottom: 11.545, paddingLeft: 15.393, paddingRight: 38.483, display: 'flex', flexDirection: 'column', gap: 3.848 }}>
-                          <p style={{ margin: 0, fontSize: 11.55, lineHeight: '15.393px', color: '#0c1014' }}>Due to laws in Australia, you won't be able to use social media soon.</p>
-                          <p style={{ margin: 0, fontWeight: 600, fontSize: 11.55, lineHeight: '15.393px', color: '#4a5df9' }}>See next steps</p>
-                        </div>
-                        {/* Profile info + stats */}
-                        <div style={{ height: 104.867, position: 'relative' }}>
-                          <div style={{ position: 'absolute', left: 15.39, top: '50%', transform: 'translateY(calc(-50% - 3.37px))', width: 80.815, height: 80.815 }}>
-                            <img src={bnRing} alt="" style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', width: 94.284, height: 94.284 }} />
-                            <img src={bnPeople} alt="" style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', width: 80.815, height: 80.815, borderRadius: '50%', objectFit: 'cover' }} />
-                          </div>
-                          <div style={{ position: 'absolute', right: 25.78, top: 29.82, display: 'flex', gap: 48, alignItems: 'flex-start' }}>
-                            {([
-                              { n: '1,134', l: 'posts' },
-                              { n: '12K',   l: 'followers' },
-                              { n: '1,756', l: 'following' },
-                            ] as { n: string; l: string }[]).map(({ n, l }) => (
-                              <div key={l} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 52 }}>
-                                <span style={{ fontWeight: 700, fontSize: 15.393, lineHeight: '19.242px', color: '#000', letterSpacing: '-0.308px' }}>{n}</span>
-                                <span style={{ fontSize: 13.469, lineHeight: '17.318px', color: '#000', letterSpacing: '-0.144px' }}>{l}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        {/* Bio */}
-                        <div style={{ padding: '0 15.393px', fontSize: 13.469, color: '#000', letterSpacing: '-0.144px' }}>
-                          <p style={{ margin: 0, fontWeight: 600, lineHeight: '17.318px' }}>Stella Jones</p>
-                          <p style={{ margin: 0, lineHeight: '17.318px' }}>Just a girl</p>
-                          <p style={{ margin: 0, lineHeight: '17.318px' }}>NJ</p>
-                        </div>
-                        {/* Edit profile button */}
-                        <div style={{ padding: '11.545px 15.393px' }}>
-                          <div style={{ background: '#f0f2f5', borderRadius: 7.657, height: 32.711, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                            <span style={{ fontWeight: 600, fontSize: 13.47, color: '#0c1014', letterSpacing: '-0.15px' }}>Edit profile</span>
-                          </div>
-                        </div>
-                        {/* Tab row */}
-                        <div style={{ borderTop: '0.481px solid #dbdfe4', height: 42.332, display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1.924px solid #0c1014' }}>
-                          <div style={{ width: 23.09, height: 23.09, ...mk(bnGridIcon) }} />
-                        </div>
-                        {/* Photo grid */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 1.443, padding: '1.924px 0 0' }}>
-                          {bnPhotos.map((m, i) => (
-                            <div key={i} style={{ aspectRatio: '1', overflow: 'hidden' }}>
-                              <img src={m} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                            </div>
-                          ))}
-                        </div>
+                      <div style={{ width: PROFILE_BANNER_W, transformOrigin: 'top left', transform: `scale(${fProfile})` }}>
+                        <ProfileBannerScreen />
                       </div>
                     </div>
                   </PhoneFrame>
@@ -5285,51 +5250,60 @@ export default function InstagramCaseStudy({ onBack }: Props) {
               <h3 className="font-serif" style={{ fontSize: 22, lineHeight: 1.3, letterSpacing: '-0.025em', color: '#1a1614', margin: '0 0 14px' }}>
                 A progressive communication system
               </h3>
-              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, lineHeight: 1.7, color: '#5e5660', margin: 0 }}>
-                We came to the realization that none of these options alone could carry the full weight of the communication. With only three weeks to convey sweeping, legally significant changes to millions of teens, we quickly realised the right solution wasn't a single surface. Instead, it was a sequenced suite. Which entry point works best depends entirely on where the user is in time relative to the ban.
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, lineHeight: 1.7, color: '#5e5660', margin: '0 0 14px' }}>
+                We came to the realization that none of these options alone could carry the full weight of the communication. With only three weeks to convey sweeping, legally significant changes to millions of teens, we{' '}
+                <strong style={{ fontWeight: 600, color: '#1a1614' }}>
+                  quickly realised the right solution wasn't a single surface. Instead, it was a sequenced suite adopting an increasingly aggressive approach.
+                </strong>
+              </p>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, lineHeight: 1.7, color: '#5e5660', margin: '0 0 28px' }}>
+                2 weeks ahead was the earliest we could reach them given the tight timeline of the project.
               </p>
             </div>
-            <SuiteSection />
-          </div>
 
-          {/* Escalation timeline — full width */}
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6 }}>
-              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#9b8ea0', margin: 0 }}>
-                Communication escalation timeline
-              </p>
-              <div style={{ flex: 1, height: '0.5px', background: 'rgba(0,0,0,0.09)' }} />
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: '#b0a4b5' }}>low</span>
-                {['#c4e0b8','#f5d97a','#f5a843','#e05555'].map(c => (
-                  <div key={c} style={{ width: 8, height: 8, borderRadius: '50%', background: c }} />
+            {/* Escalation timeline — overview before interactive suite */}
+            <div style={{ marginBottom: 32 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6 }}>
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#9b8ea0', margin: 0 }}>
+                  Communication escalation timeline
+                </p>
+                <div style={{ flex: 1, height: '0.5px', background: 'rgba(0,0,0,0.09)' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: '#b0a4b5' }}>low</span>
+                  {['#c4e0b8', '#f5a843', '#e05555'].map(c => (
+                    <div key={c} style={{ width: 8, height: 8, borderRadius: '50%', background: c }} />
+                  ))}
+                  <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: '#b0a4b5' }}>high</span>
+                </div>
+              </div>
+              <div style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
+                {[
+                  { time: '2 weeks out', style: 'Lightweight awareness', desc: 'Subtle in-app nudges informing teens the ban is coming, kept low-pressure and easy to dismiss.', intensity: 1, color: '#c4e0b8' },
+                  { time: '1 week out', style: 'Interruptive flows', desc: 'Full-screen moments that pause the experience and require acknowledgement before continuing.', intensity: 2, color: '#f5a843' },
+                  { time: 'Checkpoint day', style: 'Blocking experience', desc: 'Account access suspended. A clear, supportive screen explaining next steps and available options.', intensity: 3, color: '#e05555' },
+                ].map(({ time, style: commsStyle, desc, intensity, color }, i, arr) => (
+                  <div key={time} style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: '0 40px', padding: '20px 0', borderBottom: i < arr.length - 1 ? '1px solid rgba(0,0,0,0.06)' : 'none', alignItems: 'start' }}>
+                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: 500, color: '#9b8ea0', paddingTop: 3, margin: 0 }}>{time}</p>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 5 }}>
+                        <div style={{ display: 'flex', gap: 4 }}>
+                          {Array.from({ length: 3 }).map((_, j) => (
+                            <div key={j} style={{ width: 7, height: 7, borderRadius: '50%', background: j < intensity ? color : 'rgba(0,0,0,0.08)' }} />
+                          ))}
+                        </div>
+                        <p style={{ fontFamily: '"Fjord One", serif', fontSize: 15, color: '#1a1208', margin: 0 }}>{commsStyle}</p>
+                      </div>
+                      <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: '#7a6e74', lineHeight: 1.6, margin: 0 }}>{desc}</p>
+                    </div>
+                  </div>
                 ))}
-                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: '#b0a4b5' }}>high</span>
               </div>
             </div>
-            <div style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
-              {[
-                { time: '3 weeks out',    style: 'Lightweight awareness', desc: 'Subtle in-app nudges informing teens the ban is coming, kept low-pressure and easy to dismiss.',     intensity: 1, color: '#c4e0b8' },
-                { time: '2 weeks out',    style: 'Persistent reminders',  desc: 'More visible prompts surfacing at key moments in the session, harder to overlook.',                   intensity: 2, color: '#f5d97a' },
-                { time: '1 week out',     style: 'Interruptive flows',    desc: 'Full-screen moments that pause the experience and require acknowledgement before continuing.',          intensity: 3, color: '#f5a843' },
-                { time: 'Checkpoint day', style: 'Blocking experience',   desc: 'Account access suspended. A clear, supportive screen explaining next steps and available options.',   intensity: 4, color: '#e05555' },
-              ].map(({ time, style: commsStyle, desc, intensity, color }, i, arr) => (
-                <div key={time} style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: '0 40px', padding: '20px 0', borderBottom: i < arr.length - 1 ? '1px solid rgba(0,0,0,0.06)' : 'none', alignItems: 'start' }}>
-                  <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: 500, color: '#9b8ea0', paddingTop: 3, margin: 0 }}>{time}</p>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 5 }}>
-                      <div style={{ display: 'flex', gap: 4 }}>
-                        {Array.from({ length: 4 }).map((_, j) => (
-                          <div key={j} style={{ width: 7, height: 7, borderRadius: '50%', background: j < intensity ? color : 'rgba(0,0,0,0.08)' }} />
-                        ))}
-                      </div>
-                      <p style={{ fontFamily: '"Fjord One", serif', fontSize: 15, color: '#1a1208', margin: 0 }}>{commsStyle}</p>
-                    </div>
-                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: '#7a6e74', lineHeight: 1.6, margin: 0 }}>{desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+
+            <h3 className="font-serif" style={{ fontSize: 22, lineHeight: 1.3, letterSpacing: '-0.025em', color: '#1a1614', margin: '8px 0 20px' }}>
+              The final pick — what the explorations led to
+            </h3>
+            <SuiteSection />
           </div>
         </section>
 
@@ -5337,13 +5311,17 @@ export default function InstagramCaseStudy({ onBack }: Props) {
         <section className="py-16 border-t border-black/[0.07]">
           {/* Section label */}
           <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: '#9b8ea0', marginBottom: 10 }}>
-            Design decisions
+            Design decision 02
           </p>
           <h2 className="font-serif" style={{ fontSize: 28, lineHeight: 1.25, letterSpacing: '-0.03em', color: '#1a1614', margin: '0 0 16px' }}>
             Designing for users on both sides of the enforcement
           </h2>
           <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 15, lineHeight: 1.75, color: '#5e5660', margin: '0 0 36px' }}>
-            Now that we had the escalation framework down, there was a complication that stood in our way. Because enforcement relied on self-reported age rather than verified identity, the affected population included both legitimately underage users and incorrectly flagged adults who had entered the wrong birth year. This created a unique challenge: designing a single compliant experience that could support fundamentally different user intents without increasing confusion or policy risk.
+            Now that we had the escalation framework down, there was a complication that stood in our way. Because enforcement relied on self-reported age rather than verified identity,{' '}
+            <strong style={{ fontWeight: 600, color: '#1a1614' }}>
+              the affected population included both legitimately underage users and incorrectly flagged adults who had entered the wrong birth year.
+            </strong>{' '}
+            This created a unique challenge: designing a single compliant experience that could support fundamentally different user intents without increasing confusion or policy risk.
           </p>
 
           {/* Split persona cards + constraint bridge */}
@@ -5363,7 +5341,10 @@ export default function InstagramCaseStudy({ onBack }: Props) {
                   Teens genuinely under 16
                 </h3>
                 <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 13.5, lineHeight: 1.7, color: '#5e5660', margin: 0 }}>
-                  The primary audience were teens who had inputted their birth year correctly and were genuinely under 16. They needed clear and empathetic communication about what was happening to their accounts and what steps they could take before the ban.
+                  The primary audience were teens who had inputted their birth year correctly and were genuinely under 16. They needed clear and empathetic communication about{' '}
+                  <strong style={{ fontWeight: 600, color: '#1a1614' }}>
+                    what was happening to their accounts and what steps they could take before the ban.
+                  </strong>
                 </p>
               </div>
 
@@ -5379,7 +5360,10 @@ export default function InstagramCaseStudy({ onBack }: Props) {
                   Users with an incorrect birth year
                 </h3>
                 <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 13.5, lineHeight: 1.7, color: '#5e5660', margin: 0 }}>
-                  People 16 and older who had inputted the wrong birth year at sign-up, meaning the system wrongly flagged them as minors. Usage data showed this group was far more common than anticipated. They needed a clear way to exit the banning experience.
+                  People 16 and older who had inputted the wrong birth year at sign-up, meaning the system wrongly flagged them as minors. Usage data showed this group was far more common than anticipated. They needed a{' '}
+                  <strong style={{ fontWeight: 600, color: '#1a1614' }}>
+                    clear way to exit the banning experience.
+                  </strong>
                 </p>
               </div>
             </div>
@@ -5462,7 +5446,7 @@ export default function InstagramCaseStudy({ onBack }: Props) {
                         <rect x="28" y="230" width="104" height="30" rx="9" fill="#faf8fd" stroke="#c0b4d8" strokeWidth="0.75"/>
                         <text x="80" y="250" textAnchor="middle" fontSize="9" fill="#9080b2" fontFamily="Inter, sans-serif">I'm 16 or over</text>
                       </svg>
-                      <p style={cap}>Two CTAs on a single QP let users self-identify before proceeding. Simple, but risks teens clicking the wrong option out of curiosity.</p>
+                      <p style={cap}>This was the design preferred option where there were 2 CTAs on a single QP such that users could clearly put themselves into one of the 2 separate flows.</p>
                     </div>
                   );
                 })()}
@@ -5496,7 +5480,7 @@ export default function InstagramCaseStudy({ onBack }: Props) {
                           </g>
                         ))}
                       </svg>
-                      <p style={cap}>All actions surfaced together, framed by intent rather than age. Age verification sits alongside the others as just another option — no explicit self-labeling required.</p>
+                      <p style={cap}>All actions surfaced together, framed by intent rather than separating it as age-related actions.</p>
                     </div>
                   );
                 })()}
@@ -5509,7 +5493,7 @@ export default function InstagramCaseStudy({ onBack }: Props) {
               Drawing out the bifurcated user flow
             </h3>
             <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, lineHeight: 1.75, color: '#5e5660', margin: '0 0 32px' }}>
-              We ultimately landed on Option A. We didn't want our over-16 users to unnecessarily see the next steps that are very specifically targeted at under-16 users, given their very different goals, so we wanted to give them forked experiences after a certain point. Prior to the fork, the core messaging was still targeted to assume a primarily under-16 audience, since they were the majority of affected users. For those who were wrongly flagged, the same messaging would help them understand the stakes of staying in the experience: their account risks a temporary ban of up to three years. After that point, we would split users into their respective flows.
+              We ultimately landed on Option A. We didn't want our over-16 users to unnecessarily see the next steps that are very specifically targeted at under-16 users, given their very different goals, so we wanted to give them forked experiences after a certain point. Prior to the fork, the core messaging on the QP or interstitial was still targeted to assume a primarily under-16 audience, since they were the majority of affected users. For those who were wrongly flagged, the same messaging would help them understand the stakes of staying in the experience: their account risks a temporary ban of up to three years. After that point, we would split users into their respective flows.
             </p>
 
             {/* Flowchart */}

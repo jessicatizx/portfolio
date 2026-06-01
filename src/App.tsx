@@ -1,11 +1,13 @@
 import React from 'react'
+import SplashScreen from './components/SplashScreen'
 import InstagramThumbnail from './components/InstagramThumbnail'
 import FoxThumbnail from './components/FoxThumbnail'
 import LetterboxdThumbnail from './components/LetterboxdThumbnail'
 import ProjectChip from './components/ProjectChip'
 import InstagramCaseStudy from './pages/InstagramCaseStudy'
-import SplashScreen from './components/SplashScreen'
+
 import FlowerCursor from './components/FlowerCursor'
+import JessicaFilmStrip from './components/JessicaFilmStrip'
 
 // ── Grain overlay ────────────────────────────────────────────────
 function GrainOverlay() {
@@ -39,7 +41,7 @@ function Nav() {
           </svg>
         </a>
         <nav className="flex items-center gap-8">
-          <a href="https://linkedin.com" target="_blank" rel="noopener"
+          <a href="https://www.linkedin.com/in/jessica-ti" target="_blank" rel="noopener"
              className="font-hand text-[18px] text-ink-secondary transition-colors hover:text-ink-primary">
             LinkedIn
           </a>
@@ -89,6 +91,7 @@ function FloatIcon({ wobbleCls, traverseCls, top, label, children }: {
 function Hero() {
   const [cupsVisible, setCupsVisible] = React.useState(false)
   const [bridgeVisible, setBridgeVisible] = React.useState(false)
+  const [filmVisible, setFilmVisible] = React.useState(false)
   const [glowSpreading, setGlowSpreading] = React.useState(false)
   const [pos, setPos] = React.useState({ x: 0, y: 0 })
 
@@ -164,7 +167,7 @@ function Hero() {
         <img src="/flower-tulip-mauve.png" aria-hidden alt=""
           className="pointer-events-none absolute"
           style={{
-            width: 88, top: '32%', left: '75%',
+            width: 88, top: '40%', left: '75%',
             opacity: glowSpreading ? 1 : 0.82,
             transform: glowSpreading ? 'translateX(-50%) translateY(-4px) rotate(3deg)' : 'translateX(-50%) translateY(0px) rotate(0deg)',
             transition: 'opacity 0.6s ease 0.15s, transform 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s',
@@ -182,13 +185,17 @@ function Hero() {
         />
 
         <p className="hero-text text-[clamp(26px,2.8vw,32px)] leading-relaxed text-ink-primary">
-          <span>Jessica Ti</span> is a designer that enjoys designing and writing for
-          complex products, turning ambiguous problems into clear experiences that <span
+          <span
+            className="hero-underline cursor-default"
+            onMouseEnter={() => setFilmVisible(true)}
+            onMouseLeave={() => setFilmVisible(false)}
+            onMouseMove={handleMouseMove}
+          >Jessica Ti</span> is a designer and writer who enjoys shaping strategy, turning ambiguity into clear experiences that <span
             className="hero-underline cursor-default"
             onMouseEnter={() => setCupsVisible(true)}
             onMouseLeave={() => setCupsVisible(false)}
             onMouseMove={handleMouseMove}
-          >shape how people connect</span> and&nbsp;&hellip;&nbsp;just{' '}
+          >shape how people connect</span> and&hellip; just{' '}
           <span className={`feel-human${glowSpreading ? ' feel-human--spread' : ''}`}>feel human.</span>
         </p>
         <p className="hero-text mt-4 text-[clamp(26px,2.8vw,32px)] leading-relaxed text-ink-secondary">
@@ -202,7 +209,7 @@ function Hero() {
         <p className="mt-6 flex items-center gap-2 font-hand text-[22px] text-ink-secondary">
           Currently at
           <span className="inline-flex items-center">
-            <img src="/ig-icon.png" alt="Instagram" className="inline-block align-middle" style={{ height: '26px', width: 'auto' }} />
+            <img src="/ig-icon.png" alt="Instagram" className="inline-block align-middle" style={{ height: '30px', width: 'auto' }} />
           </span>
           . Based in <span
             className="hero-underline cursor-default"
@@ -229,6 +236,8 @@ function Hero() {
         className="pointer-events-none fixed z-50 w-48 transition-opacity duration-200"
         style={{ left: pos.x, top: pos.y - 16, opacity: bridgeVisible ? 1 : 0, transform: 'translate(-50%, -100%)' }}
       />
+      {/* Film strip — Jessica Ti */}
+      <JessicaFilmStrip visible={filmVisible} x={pos.x} y={pos.y} />
     </section>
   )
 }
@@ -241,9 +250,9 @@ const projects = [
 ]
 
 const CARD_BADGES: Record<string, { text: string; bg: string; border: string; color: string }> = {
-  instagram:  { text: 'check it out!', bg: 'rgba(228,175,200,0.82)', border: 'rgba(210,140,170,0.35)', color: '#5a2d42' },
-  fox:        { text: 'coming soon',   bg: 'rgba(228,190,155,0.82)', border: 'rgba(200,155,110,0.35)', color: '#4a2e18' },
-  letterboxd: { text: 'in production', bg: 'rgba(195,180,232,0.82)', border: 'rgba(160,140,210,0.35)', color: '#362952' },
+  instagram:  { text: 'check it out!', bg: 'rgba(228,175,200,0.38)', border: 'rgba(210,140,170,0.28)', color: '#7a3a55' },
+  fox:        { text: 'coming soon',   bg: 'rgba(228,190,155,0.38)', border: 'rgba(200,155,110,0.28)', color: '#6a4020' },
+  letterboxd: { text: 'in production', bg: 'rgba(195,180,232,0.38)', border: 'rgba(160,140,210,0.28)', color: '#4a3570' },
 }
 
 function Projects({ onNavigate, splashDone }: { onNavigate: (page: 'home' | 'instagram') => void; splashDone: boolean }) {
@@ -335,8 +344,8 @@ function Footer() {
   return (
     <footer className="border-t border-black/[0.07]">
       <div className="mx-auto flex max-w-content items-center justify-between px-20 py-12">
-        <p className="font-ui text-xs text-ink-tertiary">Designed &amp; built by Jessica Ti © 2025</p>
-        <a href="https://linkedin.com" target="_blank" rel="noopener"
+        <p className="font-ui text-xs text-ink-tertiary">Made with tea, persistence and countless hours in Claude &amp; Cursor</p>
+        <a href="https://www.linkedin.com/in/jessica-ti" target="_blank" rel="noopener"
            className="font-ui text-xs font-medium text-ink-secondary transition-colors hover:text-ink-primary">
           LinkedIn
         </a>
@@ -350,8 +359,6 @@ export default function App() {
   const [page,       setPage]       = React.useState<'home' | 'instagram'>('home')
   const [splashDone, setSplashDone] = React.useState(false)
 
-  const handleSplashDone = React.useCallback(() => setSplashDone(true), [])
-
   if (page === 'instagram') {
     return <InstagramCaseStudy onBack={() => setPage('home')} />
   }
@@ -360,7 +367,7 @@ export default function App() {
     <>
       <FlowerCursor />
       {!splashDone && (
-        <SplashScreen onDone={handleSplashDone} />
+        <SplashScreen onDone={() => setSplashDone(true)} />
       )}
       <div className="min-h-screen bg-bg">
         <GrainOverlay />
