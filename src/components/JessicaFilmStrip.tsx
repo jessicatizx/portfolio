@@ -23,13 +23,14 @@ export default function JessicaFilmStrip({ visible, x, y }: Props) {
       className="pointer-events-none fixed z-50"
       style={{
         left: x,
-        top: y - 16,
+        top: y - 20,
         transform: 'translate(-50%, -100%)',
         opacity: visible ? 1 : 0,
         transition: 'opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
       <div className="jessica-film-strip">
+        <div className="jessica-film-strip__sprocket jessica-film-strip__sprocket--top" />
         <div className="jessica-film-strip__window">
           <div
             className="jessica-film-strip__track"
@@ -41,7 +42,10 @@ export default function JessicaFilmStrip({ visible, x, y }: Props) {
               </div>
             ))}
           </div>
+          <div className="jessica-film-strip__grain" />
+          <div className="jessica-film-strip__warmth" />
         </div>
+        <div className="jessica-film-strip__sprocket jessica-film-strip__sprocket--bottom" />
       </div>
     </div>
   )

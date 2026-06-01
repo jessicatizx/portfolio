@@ -55,19 +55,42 @@ function Checkbox({ checked }: { checked: boolean }) {
   )
 }
 
+export type FoxThumbnailSnapshot = 'filters-open'
+
+const SNAPSHOT_STATE = {
+  'filters-open': {
+    filterOpen: true,
+    activeChk: false,
+    pmChk: false,
+    dateLabel: 'Next 180 days',
+    applyPulse: false,
+    filterBtnHl: false,
+    isFiltered: false,
+    zoomScale: 1.24,
+  },
+} as const
+
+interface FoxThumbnailProps {
+  /** Start the demo loop sooner (case study hero is in view on load). */
+  eager?: boolean
+  /** Freeze on a key frame (no animation or cursor). */
+  snapshot?: FoxThumbnailSnapshot
+}
+
 // ── Component ──
-export default function FoxThumbnail() {
+export default function FoxThumbnail({ eager = false, snapshot }: FoxThumbnailProps) {
+  const frozen = snapshot ? SNAPSHOT_STATE[snapshot] : null
   const wrapRef = React.useRef<HTMLDivElement>(null)
   const [s, setS] = React.useState(1)
 
-  const [filterOpen,  setFilterOpen]  = React.useState(false)
-  const [activeChk,   setActiveChk]   = React.useState(false)
-  const [pmChk,       setPmChk]       = React.useState(false)
-  const [dateLabel,   setDateLabel]   = React.useState('Next 180 days')
-  const [applyPulse,  setApplyPulse]  = React.useState(false)
-  const [filterBtnHl, setFilterBtnHl] = React.useState(false)
-  const [isFiltered,  setIsFiltered]  = React.useState(false)
-  const [zoomScale,   setZoomScale]   = React.useState(1)
+  const [filterOpen,  setFilterOpen]  = React.useState<boolean>(frozen?.filterOpen ?? false)
+  const [activeChk,   setActiveChk]   = React.useState<boolean>(frozen?.activeChk ?? false)
+  const [pmChk,       setPmChk]       = React.useState<boolean>(frozen?.pmChk ?? false)
+  const [dateLabel,   setDateLabel]   = React.useState<string>(frozen?.dateLabel ?? 'Next 180 days')
+  const [applyPulse,  setApplyPulse]  = React.useState<boolean>(frozen?.applyPulse ?? false)
+  const [filterBtnHl, setFilterBtnHl] = React.useState<boolean>(frozen?.filterBtnHl ?? false)
+  const [isFiltered,  setIsFiltered]  = React.useState<boolean>(frozen?.isFiltered ?? false)
+  const [zoomScale,   setZoomScale]   = React.useState<number>(frozen?.zoomScale ?? 1)
   const [cur, setCur] = React.useState({ x:700, y:320, visible:false, pressed:false })
 
   React.useEffect(() => {
@@ -90,7 +113,7 @@ export default function FoxThumbnail() {
   }, [])
 
   React.useEffect(() => {
-    if (!inView) return
+    if (snapshot || !inView) return
     let alive = true
     const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
     const move  = (x: number, y: number) => setCur(c => ({ ...c, x, y }))
@@ -108,7 +131,7 @@ export default function FoxThumbnail() {
         setDateLabel('Next 180 days'); setApplyPulse(false); setIsFiltered(false)
         setFilterBtnHl(false); setZoomScale(1)
         setCur({ x:700, y:320, visible:false, pressed:false })
-        await sleep(2600); if (!alive) return
+        await sleep(eager ? 500 : 2600); if (!alive) return
 
         // cursor → All Filters button
         setCur({ x:940, y:PY+70, visible:true, pressed:false })
@@ -145,7 +168,7 @@ export default function FoxThumbnail() {
     }
     loop()
     return () => { alive = false }
-  }, [inView])
+  }, [inView, eager, snapshot])
 
   const rows = isFiltered
     ? ALL_USERS.filter(u => u.status === 'ACTIVE' && u.role === 'Project Manager')
@@ -163,7 +186,7 @@ export default function FoxThumbnail() {
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at 60% 50%, rgba(59,130,246,0.06) 0%, transparent 65%)', pointerEvents:'none' }}/>
 
         {/* Zoom wrapper */}
-        <div style={{ position:'absolute', inset:0, transformOrigin:'88% 48%', transform:`scale(${zoomScale})`, transition:'transform 0.88s cubic-bezier(0.16,1,0.3,1)' }}>
+        <div style={{ position:'absolute', inset:0, transformOrigin:'88% 48%', transform:`scale(${zoomScale})`, transition: snapshot ? 'none' : 'transform 0.88s cubic-bezier(0.16,1,0.3,1)' }}>
 
           {/* ── Portal card ── */}
           <div style={{ position:'absolute', left:PX, top:PY, width:PW, height:PH, borderRadius:10, overflow:'hidden', boxShadow:'0 24px 80px rgba(0,0,0,0.55), 0 4px 20px rgba(0,0,0,0.35)', fontFamily:'-apple-system,BlinkMacSystemFont,"Inter",sans-serif', display:'flex' }}>
@@ -264,7 +287,7 @@ export default function FoxThumbnail() {
               </div>
 
               {/* Filter panel — slides in from right, positioned inside main content */}
-              <div style={{ position:'absolute', right:0, top:49, width:380, background:'#fff', borderLeft:'1px solid #e5e7eb', boxShadow:'-8px 0 28px rgba(0,0,0,0.07)', transform:filterOpen?'translateX(0)':'translateX(102%)', transition:'transform 0.36s cubic-bezier(0.32,0.72,0,1)', zIndex:10, display:'flex', flexDirection:'column', padding:'16px 22px' }}>
+              <div style={{ position:'absolute', right:0, top:49, width:380, background:'#fff', borderLeft:'1px solid #e5e7eb', boxShadow:'-8px 0 28px rgba(0,0,0,0.07)', transform:filterOpen?'translateX(0)':'translateX(102%)', transition: snapshot ? 'none' : 'transform 0.36s cubic-bezier(0.32,0.72,0,1)', zIndex:10, display:'flex', flexDirection:'column', padding:'16px 22px' }}>
                 {/* Header */}
                 <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:14, flexShrink:0 }}>
                   <span style={{ fontSize:13, fontWeight:600, color:'#111827' }}>Filters</span>
@@ -351,7 +374,7 @@ export default function FoxThumbnail() {
           </div>{/* /portal card */}
 
           {/* ── Cursor dot ── */}
-          {cur.visible && (
+          {!snapshot && cur.visible && (
             <div style={{ position:'absolute', left:cur.x, top:cur.y, width:12, height:12, borderRadius:'50%', background:'rgba(10,18,40,0.80)', border:'1.5px solid rgba(255,255,255,0.92)', transform:`translate(-50%,-50%) scale(${cur.pressed?0.65:1})`, transition:'left 0.52s cubic-bezier(0.16,1,0.3,1), top 0.52s cubic-bezier(0.16,1,0.3,1), transform 0.13s ease', zIndex:100, pointerEvents:'none', boxShadow:'0 2px 8px rgba(0,0,0,0.35)' }}/>
           )}
 

@@ -5,6 +5,7 @@ import FoxThumbnail from './components/FoxThumbnail'
 import LetterboxdThumbnail from './components/LetterboxdThumbnail'
 import ProjectChip from './components/ProjectChip'
 import InstagramCaseStudy from './pages/InstagramCaseStudy'
+import FoxCaseStudy from './pages/FoxCaseStudy'
 
 import FlowerCursor from './components/FlowerCursor'
 import JessicaFilmStrip from './components/JessicaFilmStrip'
@@ -245,17 +246,19 @@ function Hero() {
 // ── Projects ─────────────────────────────────────────────────────
 const projects = [
   { id: 'instagram',  Thumb: InstagramThumbnail, label: 'Instagram',        year: '2025', darkChip: false, caption: 'Designing for teens during Australia\'s world-first social media ban' },
-  { id: 'fox',        Thumb: FoxThumbnail,        label: 'Fox Entertainment', year: '2024', darkChip: false, caption: 'Reimagining how fans experience live sports and entertainment' },
+  { id: 'fox',        Thumb: FoxThumbnail,        label: 'Fox Entertainment', year: '2024', darkChip: false, caption: 'Revolutionizing vendor management for enhanced efficiency' },
   { id: 'letterboxd', Thumb: LetterboxdThumbnail, label: 'Letterboxd',        year: '2024', darkChip: false, caption: 'Social film logging for the people who treat watching as a ritual' },
 ]
 
 const CARD_BADGES: Record<string, { text: string; bg: string; border: string; color: string }> = {
   instagram:  { text: 'check it out!', bg: 'rgba(228,175,200,0.38)', border: 'rgba(210,140,170,0.28)', color: '#7a3a55' },
-  fox:        { text: 'coming soon',   bg: 'rgba(228,190,155,0.38)', border: 'rgba(200,155,110,0.28)', color: '#6a4020' },
+  fox:        { text: 'now showing',   bg: 'rgba(228,190,155,0.38)', border: 'rgba(200,155,110,0.28)', color: '#6a4020' },
   letterboxd: { text: 'in production', bg: 'rgba(195,180,232,0.38)', border: 'rgba(160,140,210,0.28)', color: '#4a3570' },
 }
 
-function Projects({ onNavigate, splashDone }: { onNavigate: (page: 'home' | 'instagram') => void; splashDone: boolean }) {
+type Page = 'home' | 'instagram' | 'fox'
+
+function Projects({ onNavigate, splashDone }: { onNavigate: (page: Page) => void; splashDone: boolean }) {
   const [hoveredId, setHoveredId] = React.useState<string | null>(null)
   const [pos,       setPos]       = React.useState({ x: 0, y: 0 })
 
@@ -287,8 +290,8 @@ function Projects({ onNavigate, splashDone }: { onNavigate: (page: 'home' | 'ins
               >
                 <button
                   className="block w-full text-left"
-                  onClick={() => id === 'instagram' && onNavigate('instagram')}
-                  style={{ cursor: id === 'instagram' ? 'pointer' : 'default' }}
+                  onClick={() => (id === 'instagram' || id === 'fox') && onNavigate(id as Page)}
+                  style={{ cursor: id === 'instagram' || id === 'fox' ? 'pointer' : 'default' }}
                 >
                   {id === 'instagram'
                     ? <InstagramThumbnail ready={splashDone} />
@@ -356,11 +359,15 @@ function Footer() {
 
 // ── App ──────────────────────────────────────────────────────────
 export default function App() {
-  const [page,       setPage]       = React.useState<'home' | 'instagram'>('home')
+  const [page,       setPage]       = React.useState<Page>('home')
   const [splashDone, setSplashDone] = React.useState(false)
 
   if (page === 'instagram') {
     return <InstagramCaseStudy onBack={() => setPage('home')} />
+  }
+
+  if (page === 'fox') {
+    return <FoxCaseStudy onBack={() => setPage('home')} />
   }
 
   return (

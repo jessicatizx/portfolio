@@ -4738,7 +4738,8 @@ export default function InstagramCaseStudy({ onBack }: Props) {
             <div>
               <p className="font-hand text-[18px] text-ink-tertiary mb-4">Context</p>
               <p className="font-inter text-[15px] leading-relaxed text-ink-secondary">
-                For many teens, social media holds their connection to identity and friendships. In December 2025, the world's first social media ban took effect in Australia — every teen 16 and under, banned overnight. For social media companies, there was no precedent for this. No guidance on how to help hundreds of thousands of teens understand what was happening to their accounts, or what came next. We were inventing the playbook.
+                For many teens, social media holds their connection to identity and friendships. In December 2025, the world's first social media ban took effect in Australia where every teen 16 and under, banned overnight. For social media companies, there was no precedent for this. No guidance on how to help hundreds of thousands of teens understand what was happening to their accounts, or what came next.{' '}
+                <strong className="font-semibold text-ink-primary">We were inventing the playbook.</strong>
               </p>
             </div>
           </div>
@@ -4782,9 +4783,26 @@ export default function InstagramCaseStudy({ onBack }: Props) {
               <p className="font-hand text-[18px] text-ink-tertiary mb-6">Constraints</p>
               <div className="flex flex-col gap-4">
                 {[
-                  { label: 'Evolving regulation', body: "The law was still being defined as we designed. Key enforcement details arrived in fragments, which meant decisions had to be made under uncertainty and revised quickly." },
-                  { label: 'Ecosystem consistency', body: "The policy applied across Meta's full app family — Instagram, Facebook, Messenger and Threads. Each platform has different product behaviours and codebase constraints, making a coherent cross-app experience a significant coordination challenge." },
-                  { label: 'Legally defensible enforcement', body: "Every design decision needed to hold up against the regulation's requirements. The experience couldn't just feel clear to teens. It had to demonstrably meet the enforcement standard." },
+                  {
+                    label: 'Evolving regulation',
+                    body: (
+                      <>
+                        The law was still being defined as we designed. Key enforcement details arrived in fragments, which meant{' '}
+                        <strong className="font-semibold text-ink-primary">decisions had to be made under uncertainty</strong>
+                        {' '}and revised quickly.
+                      </>
+                    ),
+                  },
+                  {
+                    label: 'Ecosystem consistency',
+                    body: (
+                      <>
+                        The policy applied across Meta's full app family including Instagram, Facebook, Messenger and Threads. Each platform has different product behaviours and codebase constraints, meaning that I had to{' '}
+                        <strong className="font-semibold text-ink-primary">collaborate extensively and closely with designers across all apps.</strong>
+                      </>
+                    ),
+                  },
+                  { label: 'Legally defensible enforcement', body: "Every design decision needed to hold up against the regulation's requirements which would be reviewed by the Australian government or we would risk a hefty fine." },
                   { label: 'Six-week timeline', body: "Core experiences had to be design-ready in just under a month and a half, across all four apps simultaneously." },
                 ].map(({ label, body }) => (
                   <div key={label} className="flex gap-6 items-start">
@@ -5501,6 +5519,9 @@ export default function InstagramCaseStudy({ onBack }: Props) {
           </div>
 
           {/* Language framing header + decision cards */}
+          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: '#9b8ea0', marginTop: 48, marginBottom: 10 }}>
+            Content decision 01
+          </p>
           <h3 className="font-serif" style={{ fontSize: 20, lineHeight: 1.3, letterSpacing: '-0.02em', color: '#1a1614', margin: '0 0 12px', fontWeight: 400 }}>
             Writing for clarity without encouraging circumvention
           </h3>
@@ -5511,6 +5532,9 @@ export default function InstagramCaseStudy({ onBack }: Props) {
         </section>
 
         <section className="py-16 border-t border-black/[0.07]">
+          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: '#9b8ea0', marginBottom: 10 }}>
+            Content decision 02
+          </p>
           <h2 className="font-serif" style={{ fontSize: 28, lineHeight: 1.25, letterSpacing: '-0.03em', color: '#1a1614', fontWeight: 400, margin: '0 0 24px' }}>
             Communicating a first-of-its-kind ban to the teens it affects
           </h2>
