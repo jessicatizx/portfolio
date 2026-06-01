@@ -1,7 +1,10 @@
 import React from 'react'
+import CaseStudyHeader from '../components/CaseStudyHeader'
+import type { SitePage } from '../components/SiteNav'
 
 interface Props {
   onBack: () => void
+  onNavigate: (page: SitePage) => void
 }
 
 const photos = [
@@ -4608,7 +4611,7 @@ function SolutionPrototype() {
 
 type GatePhase = 'locked' | 'decrypting' | 'expanding' | 'unlocked'
 
-export default function InstagramCaseStudy({ onBack }: Props) {
+export default function InstagramCaseStudy({ onBack, onNavigate }: Props) {
   const [password, setPassword] = React.useState('')
   const [phase, setPhase] = React.useState<GatePhase>('locked')
   const [wrong, setWrong] = React.useState(false)
@@ -4653,30 +4656,7 @@ export default function InstagramCaseStudy({ onBack }: Props) {
   return (
     <div className="min-h-screen bg-bg">
 
-      {/* ── Nav ── */}
-      <header className="sticky top-0 z-50 border-b border-black/[0.07] bg-bg/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-content items-center justify-between px-20 py-4">
-          <button
-            onClick={onBack}
-            className="flex items-center gap-2 font-inter text-sm text-ink-secondary transition-colors hover:text-ink-primary"
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            Back
-          </button>
-          <nav className="flex items-center gap-8">
-            <a href="https://linkedin.com" target="_blank" rel="noopener"
-               className="font-hand text-[18px] text-ink-secondary transition-colors hover:text-ink-primary">
-              LinkedIn
-            </a>
-            <a href="#playground"
-               className="font-hand text-[18px] text-ink-secondary transition-colors hover:text-ink-primary">
-              Playground
-            </a>
-          </nav>
-        </div>
-      </header>
+      <CaseStudyHeader onBack={onBack} onNavigate={onNavigate} />
 
       <main className="mx-auto max-w-content px-20">
 

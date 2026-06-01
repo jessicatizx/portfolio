@@ -24,12 +24,13 @@ export default function JessicaFilmStrip({ visible, x, y }: Props) {
       style={{
         left: x,
         top: y - 20,
-        transform: 'translate(-50%, -100%)',
+        transform: `translate(-50%, -100%) scale(${visible ? 1.1 : 1})`,
         opacity: visible ? 1 : 0,
-        transition: 'opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+        transition:
+          'opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
-      <div className="jessica-film-strip">
+      <div className={`jessica-film-strip${visible ? ' jessica-film-strip--active' : ''}`}>
         <div className="jessica-film-strip__sprocket jessica-film-strip__sprocket--top" />
         <div className="jessica-film-strip__window">
           <div

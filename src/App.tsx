@@ -6,9 +6,13 @@ import LetterboxdThumbnail from './components/LetterboxdThumbnail'
 import ProjectChip from './components/ProjectChip'
 import InstagramCaseStudy from './pages/InstagramCaseStudy'
 import FoxCaseStudy from './pages/FoxCaseStudy'
+import MuseumPage from './pages/MuseumPage'
+import AboutPage from './pages/AboutPage'
 
 import FlowerCursor from './components/FlowerCursor'
+import TeaSpillFooter from './components/TeaSpillFooter'
 import JessicaFilmStrip from './components/JessicaFilmStrip'
+import SiteNav, { type SitePage } from './components/SiteNav'
 
 // ── Grain overlay ────────────────────────────────────────────────
 function GrainOverlay() {
@@ -24,35 +28,6 @@ function GrainOverlay() {
         opacity: 0.038,
       }}
     />
-  )
-}
-
-// ── Nav ──────────────────────────────────────────────────────────
-function Nav() {
-  return (
-    <header className="sticky top-0 z-50 border-b border-black/[0.07] bg-bg/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-content items-center justify-between px-20 py-4">
-        <a href="/" aria-label="Home">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-            <circle cx="14" cy="14" r="6" fill="#E8A0BF"/>
-            <circle cx="14" cy="4"  r="4" fill="#F4C7DB"/>
-            <circle cx="14" cy="24" r="4" fill="#F4C7DB"/>
-            <circle cx="4"  cy="14" r="4" fill="#F4C7DB"/>
-            <circle cx="24" cy="14" r="4" fill="#F4C7DB"/>
-          </svg>
-        </a>
-        <nav className="flex items-center gap-8">
-          <a href="https://www.linkedin.com/in/jessica-ti" target="_blank" rel="noopener"
-             className="font-hand text-[18px] text-ink-secondary transition-colors hover:text-ink-primary">
-            LinkedIn
-          </a>
-          <a href="#playground"
-             className="font-hand text-[18px] text-ink-secondary transition-colors hover:text-ink-primary">
-            Playground
-          </a>
-        </nav>
-      </div>
-    </header>
   )
 }
 
@@ -101,7 +76,7 @@ function Hero() {
   }
 
   return (
-    <section className="relative mx-auto max-w-content px-20 py-24 overflow-hidden">
+    <section className="relative mx-auto max-w-content overflow-x-clip px-20 py-24">
 
       {/* Sketch filter def — hidden */}
       <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden>
@@ -141,7 +116,7 @@ function Hero() {
         </svg>
       </FloatIcon>
 
-      <div className="relative max-w-hero">
+      <div className="relative max-w-hero overflow-visible">
 
         {/* Flowers — appear on hover of "crafting little surprises" */}
         {/* Top: pink tulips — above "designer" */}
@@ -256,9 +231,7 @@ const CARD_BADGES: Record<string, { text: string; bg: string; border: string; co
   letterboxd: { text: 'in production', bg: 'rgba(195,180,232,0.38)', border: 'rgba(160,140,210,0.28)', color: '#4a3570' },
 }
 
-type Page = 'home' | 'instagram' | 'fox'
-
-function Projects({ onNavigate, splashDone }: { onNavigate: (page: Page) => void; splashDone: boolean }) {
+function Projects({ onNavigate, splashDone }: { onNavigate: (page: SitePage) => void; splashDone: boolean }) {
   const [hoveredId, setHoveredId] = React.useState<string | null>(null)
   const [pos,       setPos]       = React.useState({ x: 0, y: 0 })
 
@@ -290,7 +263,7 @@ function Projects({ onNavigate, splashDone }: { onNavigate: (page: Page) => void
               >
                 <button
                   className="block w-full text-left"
-                  onClick={() => (id === 'instagram' || id === 'fox') && onNavigate(id as Page)}
+                  onClick={() => (id === 'instagram' || id === 'fox') && onNavigate(id)}
                   style={{ cursor: id === 'instagram' || id === 'fox' ? 'pointer' : 'default' }}
                 >
                   {id === 'instagram'
@@ -342,32 +315,35 @@ function Projects({ onNavigate, splashDone }: { onNavigate: (page: Page) => void
   )
 }
 
-// ── Footer ───────────────────────────────────────────────────────
-function Footer() {
-  return (
-    <footer className="border-t border-black/[0.07]">
-      <div className="mx-auto flex max-w-content items-center justify-between px-20 py-12">
-        <p className="font-ui text-xs text-ink-tertiary">Made with tea, persistence and countless hours in Claude &amp; Cursor</p>
-        <a href="https://www.linkedin.com/in/jessica-ti" target="_blank" rel="noopener"
-           className="font-ui text-xs font-medium text-ink-secondary transition-colors hover:text-ink-primary">
-          LinkedIn
-        </a>
-      </div>
-    </footer>
-  )
-}
-
 // ── App ──────────────────────────────────────────────────────────
 export default function App() {
-  const [page,       setPage]       = React.useState<Page>('home')
+  const [page, setPage] = React.useState<SitePage>('home')
   const [splashDone, setSplashDone] = React.useState(false)
 
   if (page === 'instagram') {
-    return <InstagramCaseStudy onBack={() => setPage('home')} />
+    return <InstagramCaseStudy onBack={() => setPage('home')} onNavigate={setPage} />
   }
 
   if (page === 'fox') {
-    return <FoxCaseStudy onBack={() => setPage('home')} />
+    return <FoxCaseStudy onBack={() => setPage('home')} onNavigate={setPage} />
+  }
+
+  if (page === 'museum') {
+    return (
+      <>
+        <FlowerCursor />
+        <MuseumPage onNavigate={setPage} />
+      </>
+    )
+  }
+
+  if (page === 'about') {
+    return (
+      <>
+        <FlowerCursor />
+        <AboutPage onNavigate={setPage} />
+      </>
+    )
   }
 
   return (
@@ -378,12 +354,12 @@ export default function App() {
       )}
       <div className="min-h-screen bg-bg">
         <GrainOverlay />
-        <Nav />
+        <SiteNav onNavigate={setPage} active="home" />
         <main>
           <Hero />
           <Projects onNavigate={setPage} splashDone={splashDone} />
         </main>
-        <Footer />
+        <TeaSpillFooter />
       </div>
     </>
   )

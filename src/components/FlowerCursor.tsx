@@ -21,6 +21,7 @@ export default function FlowerCursor() {
   const [pos,    setPos]    = React.useState({ x: -200, y: -200 })
   const [onCard, setOnCard] = React.useState(false)
   const [inside, setInside] = React.useState(false)
+  const [teaMop, setTeaMop] = React.useState(false)
 
   // Suppress the system cursor everywhere
   React.useEffect(() => {
@@ -29,6 +30,15 @@ export default function FlowerCursor() {
     style.textContent = `* { cursor: none !important; }`
     document.head.appendChild(style)
     return () => style.remove()
+  }, [])
+
+  React.useEffect(() => {
+    const onTeaMop = (e: Event) => {
+      const detail = (e as CustomEvent<{ active: boolean }>).detail
+      setTeaMop(!!detail?.active)
+    }
+    window.addEventListener('tea-mop', onTeaMop)
+    return () => window.removeEventListener('tea-mop', onTeaMop)
   }, [])
 
   React.useEffect(() => {
@@ -58,7 +68,7 @@ export default function FlowerCursor() {
     })
   }, [onCard])
 
-  const visible = inside && !onCard
+  const visible = inside && !onCard && !teaMop
 
   return (
     <div

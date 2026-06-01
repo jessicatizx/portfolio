@@ -19,11 +19,8 @@ const B = {
   v119: 'https://www.figma.com/api/mcp/asset/57d91048-a0b4-4c4f-8723-b4214974cdf3', // bottom sepal
 }
 
-// Partially open — flat image (281 × 236 px in Figma)
+// Partially open — flat image (281 × 236 px in Figma); full bloom is this asset scaled up
 const IMG_PARTIAL = 'https://www.figma.com/api/mcp/asset/d138b2c2-627d-43aa-bbf5-5c4f576bfb6f'
-
-// Fully open — flat image (562 × 472 px in Figma)
-const IMG_FULL = 'https://www.figma.com/api/mcp/asset/8f88a2b9-0a81-4707-8480-46e4216e8a70'
 
 // Display sizes (scaled for viewport)
 const BUD_W     = 214
@@ -33,10 +30,10 @@ const PARTIAL_H = Math.round(PARTIAL_W * 236.038 / 281) // ≈ 210
 const FULL_W    = 340
 const FULL_H    = Math.round(FULL_W * 472.076 / 562)   // ≈ 285
 
-// Full bloom scales up from partial's visual size
-const BLOOM_START_SCALE = PARTIAL_W / FULL_W
-const BLOOM_EASE        = 'cubic-bezier(0.22, 1, 0.36, 1)'
-const BLOOM_DURATION    = '1.45s'
+// Scale partial lotus up to final bloom size (same artwork, no image swap)
+const BLOOM_END_SCALE = FULL_W / PARTIAL_W
+const BLOOM_EASE      = 'cubic-bezier(0.22, 1, 0.36, 1)'
+const BLOOM_DURATION  = '1.45s'
 
 const OPEN_EASE = 'cubic-bezier(0.25, 0.88, 0.45, 1)'   // smooth deceleration, no snap
 const SETTLE    = 'cubic-bezier(0.33, 0.72, 0.25, 1)'
@@ -138,8 +135,7 @@ export default function SplashScreen({ onDone }: Props) {
   const [budOpening,  setBudOpening]  = React.useState(false)
   const [budGone,     setBudGone]     = React.useState(false)
   const [partialIn,   setPartialIn]   = React.useState(false)
-  const [partialGone, setPartialGone] = React.useState(false)
-  const [fullIn,      setFullIn]      = React.useState(false)
+  const [bloomScale,  setBloomScale]  = React.useState(false)
 
   const hasSeenBefore = React.useRef(
     typeof window !== 'undefined' && !!localStorage.getItem('lotus-seen')
@@ -151,8 +147,7 @@ export default function SplashScreen({ onDone }: Props) {
       setTimeout(() => setBudOpening(true),  800),
       setTimeout(() => setPartialIn(true),  1050),   // overlap while petals still moving
       setTimeout(() => setBudGone(true),    1180),   // bud fades after petals have opened more
-      setTimeout(() => setPartialGone(true), 2050),   // fade out in sync with full scale-up
-      setTimeout(() => setFullIn(true),     2050),   // full bloom grows from partial size
+      setTimeout(() => setBloomScale(true), 2050),   // scale partial lotus to full bloom
       setTimeout(() => setPhase(2),         2500),   // glow
       setTimeout(() => setPhase(3),         3100),   // text fades up
       setTimeout(() => setFadeOut(true),    5000),   // hold text ~1.9s, then fade overlay
@@ -162,7 +157,7 @@ export default function SplashScreen({ onDone }: Props) {
   }, [onDone])
 
   const budOpacity     = budGone     ? 0 : 1
-  const partialOpacity = partialIn && !partialGone ? 1 : 0
+  const partialOpacity = partialIn ? 1 : 0
   const glowVisible    = phase >= 2
   const textVisible    = phase >= 3
   const overlayOut     = fadeOut
@@ -220,44 +215,25 @@ export default function SplashScreen({ onDone }: Props) {
           <BudAssembly opening={budOpening} />
         </div>
 
-        {/* ── Partially open (fades as full scales up beneath) ── */}
-        <img
-          src={IMG_PARTIAL}
-          alt=""
+        {/* ── Open lotus — one image, scales up to full bloom ── */}
+        <div
           style={{
             position: 'absolute',
             width: PARTIAL_W,
             height: PARTIAL_H,
-            objectFit: 'contain',
             zIndex: 2,
             opacity: partialOpacity,
-            transform: partialGone ? 'scale(1.02)' : 'scale(1)',
+            transform: bloomScale ? `scale(${BLOOM_END_SCALE})` : 'scale(1)',
             transformOrigin: 'center center',
-            transition: partialGone
-              ? 'opacity 1.15s ease-in-out, transform 1.15s ease-in-out'
+            transition: bloomScale
+              ? `transform ${BLOOM_DURATION} ${BLOOM_EASE}, opacity 0.65s ease-in-out`
               : 'opacity 0.65s ease-in-out',
+            willChange: bloomScale ? 'transform' : undefined,
             pointerEvents: 'none',
           }}
-        />
-
-        {/* ── Fully open — scales up from partial size ── */}
-        <div style={{
-          position: 'absolute',
-          width: FULL_W,
-          height: FULL_H,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1,
-          transform: fullIn ? 'scale(1)' : `scale(${BLOOM_START_SCALE})`,
-          opacity: fullIn ? 1 : 0,
-          transformOrigin: 'center center',
-          transition: `transform ${BLOOM_DURATION} ${BLOOM_EASE}, opacity 1.15s ease-in-out`,
-          willChange: fullIn ? 'transform, opacity' : undefined,
-          pointerEvents: 'none',
-        }}>
+        >
           <img
-            src={IMG_FULL}
+            src={IMG_PARTIAL}
             alt=""
             style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
           />
