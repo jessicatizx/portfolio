@@ -10,7 +10,7 @@ const STORAGE_KEY = 'tea-splash-seen'
 const FRAMES = {
   pinkApproach: '/splash/01-pink-approach.svg',
   blueApproach: '/splash/02-blue-approach.svg',
-  collide: '/splash/03-collide.svg',
+  collide: '/splash/03-collide.svg?v=2',
   spill: '/splash/04-spill.svg',
   fall: '/splash/05-fall.svg',
   disappear: '/splash/06-disappear.svg',

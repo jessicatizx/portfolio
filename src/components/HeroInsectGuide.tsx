@@ -106,17 +106,25 @@ export function useHeroInsectTour({
       })
     }
 
-    function measureTarget(el: HTMLElement) {
+    function measureTarget(el: HTMLElement, fromX = travelFrom.x, fromY = travelFrom.y) {
       const anchor = cueAnchor(el)
-      const dx = anchor.x - travelFrom.x
-      const dy = anchor.y - travelFrom.y
+      const dx = anchor.x - fromX
+      const dy = anchor.y - fromY
       return {
         ...anchor,
         rot: angleDeg(dx, dy) + 90,
       }
     }
 
+    const waitForLayout = () =>
+      new Promise<void>(resolve => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+      })
+
     async function run() {
+      if (document.fonts?.ready) {
+        await Promise.race([document.fonts.ready, sleep(2800)])
+      }
       await sleep(initialDelay)
       if (!alive) return
 
@@ -129,12 +137,15 @@ export function useHeroInsectTour({
       const container = containerRef.current
       if (!container || cues.length === 0) return
 
+      await waitForLayout()
+
       const first = measureTarget(cues[0].el)
       travelFrom = { x: first.x - 40, y: first.y + 28, rot: first.rot - 18 }
       setTransform({ ...travelFrom, scale: 0.88, opacity: 1 })
 
+      /** Re-read cue position every frame so wrapped/reflowed text stays targeted. */
       const animateTravel = (
-        to: { x: number; y: number; rot: number },
+        resolveTarget: () => { x: number; y: number; rot: number },
         duration: number,
         opts?: { fadeOut?: boolean }
       ) =>
@@ -145,18 +156,21 @@ export function useHeroInsectTour({
             if (!alive) return
             const t = Math.min(1, (now - phaseStart) / duration)
             const e = easeInOutCubic(t)
+            const to = resolveTarget()
             const dx = to.x - from.x
             const dy = to.y - from.y
             const flat = Math.abs(dy) < Math.abs(dx) * 0.38
             const { px, py } = travelSway(dx, dy, e)
             const opacity = opts?.fadeOut ? Math.max(0, 1 - t * 1.15) : 1
+            const x = from.x + dx * e + px
+            const y = from.y + dy * e + py
 
             setTransform({
-              x: from.x + dx * e + px,
-              y: from.y + dy * e + py,
+              x,
+              y,
               rot:
-                from.rot +
-                (to.rot - from.rot) * e +
+                angleDeg(to.x - x, to.y - y) +
+                90 +
                 (flat ? 0 : Math.sin(e * Math.PI * 5) * 4),
               scale: 0.92 + (flat ? 0 : Math.sin(e * Math.PI) * 0.06),
               opacity,
@@ -176,20 +190,17 @@ export function useHeroInsectTour({
         if (list.length === 0) break
 
         const { id, el } = list[cueIndex % list.length]
-        let target = measureTarget(el)
 
         if (pauseCue) {
           onLeaveRef.current(pauseCue)
           pauseCue = null
         }
 
-        await animateTravel(
-          { x: target.x, y: target.y, rot: target.rot },
-          travelDuration
-        )
+        await animateTravel(() => measureTarget(el), travelDuration)
 
         if (!alive) break
 
+        let target = measureTarget(el)
         phaseStart = performance.now()
         pauseCue = id
         onVisitRef.current(id, { x: target.x, y: target.y })
@@ -224,12 +235,16 @@ export function useHeroInsectTour({
         pauseCue = null
 
         if (id === 'sf') {
-          const exit = {
-            x: travelFrom.x + Math.max(180, window.innerWidth * 0.22),
-            y: travelFrom.y - 120,
-            rot: travelFrom.rot - 32,
-          }
-          await animateTravel(exit, 2400, { fadeOut: true })
+          const exitFrom = { ...travelFrom }
+          await animateTravel(
+            () => ({
+              x: exitFrom.x + Math.max(180, window.innerWidth * 0.22),
+              y: exitFrom.y - 120,
+              rot: exitFrom.rot - 32,
+            }),
+            2400,
+            { fadeOut: true }
+          )
           if (alive) setTransform(t => ({ ...t, opacity: 0 }))
           break
         }
