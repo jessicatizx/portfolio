@@ -12,6 +12,12 @@ import AboutPage from './pages/AboutPage'
 import FlowerCursor from './components/FlowerCursor'
 import TeaSpillFooter from './components/TeaSpillFooter'
 import JessicaFilmStrip from './components/JessicaFilmStrip'
+import {
+  HeroInsectSprite,
+  useHeroInsectTour,
+  usePrefersReducedMotion,
+  type HeroCueId,
+} from './components/HeroInsectGuide'
 import SiteNav, { type SitePage } from './components/SiteNav'
 
 // ── Grain overlay ────────────────────────────────────────────────
@@ -63,17 +69,64 @@ function FloatIcon({ wobbleCls, traverseCls, top, label, children }: {
   )
 }
 
+function cueClass(active: boolean) {
+  return `hero-interactive hero-underline cursor-default${active ? ' hero-interactive--active' : ''}`
+}
+
 // ── Hero ─────────────────────────────────────────────────────────
-function Hero() {
-  const [cupsVisible, setCupsVisible] = React.useState(false)
-  const [bridgeVisible, setBridgeVisible] = React.useState(false)
-  const [filmVisible, setFilmVisible] = React.useState(false)
-  const [glowSpreading, setGlowSpreading] = React.useState(false)
+function Hero({ splashReady }: { splashReady: boolean }) {
+  const heroTextRef = React.useRef<HTMLDivElement>(null)
+  const reducedMotion = usePrefersReducedMotion()
+  const [userCue, setUserCue] = React.useState<HeroCueId | null>(null)
+  const [insectCue, setInsectCue] = React.useState<HeroCueId | null>(null)
+  const [demoAnchor, setDemoAnchor] = React.useState({ x: 0, y: 0 })
   const [pos, setPos] = React.useState({ x: 0, y: 0 })
+
+  const isActive = (id: HeroCueId) => userCue === id || insectCue === id
+
+  const { transform: insectTransform } = useHeroInsectTour({
+    containerRef: heroTextRef,
+    enabled: splashReady && !reducedMotion,
+    onVisit: (id, anchor) => {
+      const root = heroTextRef.current
+      if (!root) return
+      const c = root.getBoundingClientRect()
+      setDemoAnchor({ x: c.left + anchor.x, y: c.top + anchor.y })
+      setInsectCue(id)
+    },
+    onLeave: id => {
+      setInsectCue(prev => (prev === id ? null : prev))
+    },
+  })
 
   function handleMouseMove(e: React.MouseEvent) {
     setPos({ x: e.clientX, y: e.clientY })
   }
+
+  function overlayPos(id: HeroCueId) {
+    if (userCue === id) return pos
+    if (insectCue === id) return demoAnchor
+    return pos
+  }
+
+  const filmVisible = isActive('jessica')
+  const cupsVisible = isActive('connect')
+  const glowSpreading = isActive('surprises')
+  const bridgeVisible = isActive('sf')
+
+  React.useEffect(() => {
+    if (!insectCue || !heroTextRef.current) return
+    const update = () => {
+      const root = heroTextRef.current
+      const el = root?.querySelector<HTMLElement>(`[data-hero-cue="${insectCue}"]`)
+      if (!root || !el) return
+      const r = el.getBoundingClientRect()
+      setDemoAnchor({ x: r.left + r.width / 2, y: r.bottom - 6 })
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [insectCue])
 
   return (
     <section className="relative mx-auto max-w-content overflow-x-clip px-20 py-24">
@@ -116,7 +169,8 @@ function Hero() {
         </svg>
       </FloatIcon>
 
-      <div className="relative max-w-hero overflow-visible">
+      <div ref={heroTextRef} className="relative max-w-hero overflow-visible">
+        {!reducedMotion && <HeroInsectSprite transform={insectTransform} />}
 
         {/* Flowers — appear on hover of "crafting little surprises" */}
         {/* Top: pink tulips — above "designer" */}
@@ -162,23 +216,26 @@ function Hero() {
 
         <p className="hero-text text-[clamp(26px,2.8vw,32px)] leading-relaxed text-ink-primary">
           <span
-            className="hero-underline cursor-default"
-            onMouseEnter={() => setFilmVisible(true)}
-            onMouseLeave={() => setFilmVisible(false)}
+            data-hero-cue="jessica"
+            className={cueClass(isActive('jessica'))}
+            onMouseEnter={() => setUserCue('jessica')}
+            onMouseLeave={() => setUserCue(null)}
             onMouseMove={handleMouseMove}
           >Jessica Ti</span> is a designer and writer who enjoys shaping strategy, turning ambiguity into clear experiences that <span
-            className="hero-underline cursor-default"
-            onMouseEnter={() => setCupsVisible(true)}
-            onMouseLeave={() => setCupsVisible(false)}
+            data-hero-cue="connect"
+            className={cueClass(isActive('connect'))}
+            onMouseEnter={() => setUserCue('connect')}
+            onMouseLeave={() => setUserCue(null)}
             onMouseMove={handleMouseMove}
           >shape how people connect</span> and&hellip; just{' '}
           <span className={`feel-human${glowSpreading ? ' feel-human--spread' : ''}`}>feel human.</span>
         </p>
         <p className="hero-text mt-4 text-[clamp(26px,2.8vw,32px)] leading-relaxed text-ink-secondary">
           Outside of work, she's a tinkerer at heart, <span
-            className="hero-underline cursor-default"
-            onMouseEnter={() => setGlowSpreading(true)}
-            onMouseLeave={() => setGlowSpreading(false)}
+            data-hero-cue="surprises"
+            className={cueClass(isActive('surprises'))}
+            onMouseEnter={() => setUserCue('surprises')}
+            onMouseLeave={() => setUserCue(null)}
           >crafting little surprises</span>{' '}
           that spark joy for others.
         </p>
@@ -188,9 +245,10 @@ function Hero() {
             <img src="/ig-icon.png" alt="Instagram" className="inline-block align-middle" style={{ height: '30px', width: 'auto' }} />
           </span>
           . Based in <span
-            className="hero-underline cursor-default"
-            onMouseEnter={() => setBridgeVisible(true)}
-            onMouseLeave={() => setBridgeVisible(false)}
+            data-hero-cue="sf"
+            className={cueClass(isActive('sf'))}
+            onMouseEnter={() => setUserCue('sf')}
+            onMouseLeave={() => setUserCue(null)}
             onMouseMove={handleMouseMove}
           >San Francisco</span>.
         </p>
@@ -202,7 +260,12 @@ function Hero() {
         alt=""
         aria-hidden
         className="pointer-events-none fixed z-50 w-48 transition-opacity duration-200"
-        style={{ left: pos.x, top: pos.y - 16, opacity: cupsVisible ? 1 : 0, transform: 'translate(-50%, -100%)' }}
+        style={{
+          left: overlayPos('connect').x,
+          top: overlayPos('connect').y - 16,
+          opacity: cupsVisible ? 1 : 0,
+          transform: 'translate(-50%, -100%)',
+        }}
       />
       {/* Hover image — bridge */}
       <img
@@ -210,10 +273,19 @@ function Hero() {
         alt=""
         aria-hidden
         className="pointer-events-none fixed z-50 w-48 transition-opacity duration-200"
-        style={{ left: pos.x, top: pos.y - 16, opacity: bridgeVisible ? 1 : 0, transform: 'translate(-50%, -100%)' }}
+        style={{
+          left: overlayPos('sf').x,
+          top: overlayPos('sf').y - 16,
+          opacity: bridgeVisible ? 1 : 0,
+          transform: 'translate(-50%, -100%)',
+        }}
       />
       {/* Film strip — Jessica Ti */}
-      <JessicaFilmStrip visible={filmVisible} x={pos.x} y={pos.y} />
+      <JessicaFilmStrip
+        visible={filmVisible}
+        x={overlayPos('jessica').x}
+        y={overlayPos('jessica').y}
+      />
     </section>
   )
 }
@@ -268,7 +340,9 @@ function Projects({ onNavigate, splashDone }: { onNavigate: (page: SitePage) => 
                 >
                   {id === 'instagram'
                     ? <InstagramThumbnail ready={splashDone} />
-                    : <Thumb />}
+                    : id === 'fox'
+                      ? <FoxThumbnail lookahead />
+                      : <Thumb />}
                 </button>
               </article>
               <div className="absolute bottom-6 left-6" style={{ zIndex: 50 }}>
@@ -356,7 +430,7 @@ export default function App() {
         <GrainOverlay />
         <SiteNav onNavigate={setPage} active="home" />
         <main>
-          <Hero />
+          <Hero splashReady={splashDone} />
           <Projects onNavigate={setPage} splashDone={splashDone} />
         </main>
         <TeaSpillFooter />

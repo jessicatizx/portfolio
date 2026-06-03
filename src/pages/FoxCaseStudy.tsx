@@ -533,7 +533,7 @@ export default function FoxCaseStudy({ onBack, onNavigate }: Props) {
               data-no-flower
               className="overflow-hidden rounded-card shadow-[0_2px_8px_rgba(0,0,0,0.08),0_12px_32px_rgba(0,0,0,0.08)]"
             >
-              <FoxThumbnail eager />
+              <FoxThumbnail eager lookahead />
             </div>
             <figcaption className="mt-3 pl-1 font-inter text-xs text-ink-tertiary">
               Interactive prototype — filter panel and vendor management flows in the admin portal

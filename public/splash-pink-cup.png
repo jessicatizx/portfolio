@@ -1,0 +1,18 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 1728 1117" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="pink tea cup" clip-path="url(#clip0_0_4)">
+<rect width="1728" height="1117" fill="#FCE9F5"/>
+<ellipse id="Ellipse 36" cx="48.6943" cy="684.679" rx="239.5" ry="83.5" transform="rotate(-10.4823 48.6943 684.679)" fill="var(--fill-0, #C381AD)"/>
+<path id="Vector 133" d="M134.43 974.925C-88.4409 1027.96 -166.244 841.229 -177.287 741.236C35.0432 831.31 220.599 721.519 286.836 655.364C309.059 876.614 194.492 960.592 134.43 974.925Z" fill="var(--fill-0, #FFC8ED)"/>
+<ellipse id="Ellipse 39" cx="339" cy="738.5" rx="84" ry="100.5" fill="var(--fill-0, #FFC8ED)"/>
+<path id="Ellipse 40" d="M384.703 736.749C384.703 751.909 375.253 808.208 333.403 797.949C308.301 797.949 279.853 757.309 279.853 742.149C279.853 726.988 292.453 680.858 333.403 677.349C393.83 672.17 384.703 721.588 384.703 736.749Z" fill="var(--fill-0, #FCE9F5)"/>
+<g id="Vector 136">
+<path d="M2 713C71 687 213.9 706.3 215.5 709.5C215.715 709.93 215.908 710.269 216.082 710.529C216.564 710.183 217.037 709.839 217.5 709.5C217.5 710.654 217.2 712.208 216.082 710.529C178.934 737.26 86.5036 785.426 2 772L0 770.5V712.877L2 713Z" fill="var(--fill-0, #A1B71A)"/>
+<path d="M2 713C71 687 213.9 706.3 215.5 709.5C217.1 712.7 217.5 710.833 217.5 709.5C181.333 736 87.6 785.6 2 772L0 770.5V712.877L2 713Z" stroke="var(--stroke-0, #A1B71A)"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_0_4">
+<rect width="1728" height="1117" fill="white"/>
+</clipPath>
+</defs>
+</svg>

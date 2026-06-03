@@ -92,19 +92,6 @@ function MugGraphic({ pouring }: { pouring: boolean }) {
   )
 }
 
-function MopProp({ visible }: { visible: boolean }) {
-  return (
-    <div className={`tea-mop-prop${visible ? ' tea-mop-prop--visible' : ''}`} aria-hidden>
-      <svg width="44" height="36" viewBox="0 0 44 36" fill="none">
-        <rect x="4" y="6" width="36" height="22" rx="3" fill="#c4a882" stroke="rgba(90,70,50,0.35)" strokeWidth="1" />
-        <rect x="6" y="8" width="32" height="18" rx="2" fill="#d9c4a8" />
-        <path d="M4 10 H2 M4 16 H2 M4 22 H2 M40 10 H42 M40 16 H42 M40 22 H42" stroke="#a88868" strokeWidth="1.2" strokeLinecap="round" />
-        <path d="M8 28 H36" stroke="rgba(90,70,50,0.25)" strokeWidth="1" strokeDasharray="2 2" />
-      </svg>
-    </div>
-  )
-}
-
 function RugCursor({ x, y, visible }: { x: number; y: number; visible: boolean }) {
   return (
     <div
@@ -257,16 +244,6 @@ export default function TeaSpillFooter() {
     }
   }, [])
 
-  const placeMopBesideMug = React.useCallback(() => {
-    const mug = mugWrapRef.current
-    if (!mug) return
-    const rect = mug.getBoundingClientRect()
-    setMopPos({
-      x: rect.right + 8,
-      y: rect.top + rect.height * 0.52,
-    })
-  }, [])
-
   const beginMopPhase = React.useCallback(() => {
     spreadRef.current = 1
     mopPointsRef.current = []
@@ -276,8 +253,7 @@ export default function TeaSpillFooter() {
     initialTeaRef.current = canvas ? countTeaPixels(canvas) : 1
     setPhase('mop')
     dispatchMop(true)
-    requestAnimationFrame(placeMopBesideMug)
-  }, [drawSpill, placeMopBesideMug])
+  }, [drawSpill])
 
   const startCycle = React.useCallback(() => {
     if (reducedMotion.current) return
@@ -470,7 +446,6 @@ export default function TeaSpillFooter() {
           <div ref={mugWrapRef} className="tea-mug-wrap">
             <MugGraphic pouring={pouring} />
           </div>
-          <MopProp visible={mopActive} />
           <canvas ref={canvasRef} className="tea-spill-canvas" />
           {mopActive && (
             <p className="tea-mop-hint font-hand text-[15px] text-[#6a8f62]">

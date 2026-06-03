@@ -20,13 +20,15 @@ export default function SiteNav({ onNavigate, active }: Props) {
           aria-label="Home"
           className="rounded-md transition-opacity hover:opacity-80"
         >
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
-            <circle cx="14" cy="14" r="6" fill="#E8A0BF" />
-            <circle cx="14" cy="4" r="4" fill="#F4C7DB" />
-            <circle cx="14" cy="24" r="4" fill="#F4C7DB" />
-            <circle cx="4" cy="14" r="4" fill="#F4C7DB" />
-            <circle cx="24" cy="14" r="4" fill="#F4C7DB" />
-          </svg>
+          <img
+            src="/site-icon.svg?v=3"
+            alt=""
+            aria-hidden
+            className="h-10 w-auto"
+            width={48}
+            height={40}
+            draggable={false}
+          />
         </button>
         <nav className="flex items-center gap-8">
           <button type="button" onClick={() => onNavigate('museum')} className={linkCls('museum')}>

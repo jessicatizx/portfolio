@@ -73,12 +73,20 @@ const SNAPSHOT_STATE = {
 interface FoxThumbnailProps {
   /** Start the demo loop sooner (case study hero is in view on load). */
   eager?: boolean
+  /** Begin the demo before the thumbnail scrolls into view (lookahead margin). */
+  lookahead?: boolean
   /** Freeze on a key frame (no animation or cursor). */
   snapshot?: FoxThumbnailSnapshot
 }
 
+function idleDelay(eager: boolean, lookahead: boolean): number {
+  if (eager) return lookahead ? 0 : 500
+  if (lookahead) return 600
+  return 2600
+}
+
 // ── Component ──
-export default function FoxThumbnail({ eager = false, snapshot }: FoxThumbnailProps) {
+export default function FoxThumbnail({ eager = false, lookahead = false, snapshot }: FoxThumbnailProps) {
   const frozen = snapshot ? SNAPSHOT_STATE[snapshot] : null
   const wrapRef = React.useRef<HTMLDivElement>(null)
   const [s, setS] = React.useState(1)
@@ -106,11 +114,14 @@ export default function FoxThumbnail({ eager = false, snapshot }: FoxThumbnailPr
     const el = wrapRef.current; if (!el) return
     const obs = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.01 }
+      {
+        threshold: 0,
+        rootMargin: lookahead ? '0px 0px 55% 0px' : '0px',
+      }
     )
     obs.observe(el)
     return () => obs.disconnect()
-  }, [])
+  }, [lookahead])
 
   React.useEffect(() => {
     if (snapshot || !inView) return
@@ -131,7 +142,7 @@ export default function FoxThumbnail({ eager = false, snapshot }: FoxThumbnailPr
         setDateLabel('Next 180 days'); setApplyPulse(false); setIsFiltered(false)
         setFilterBtnHl(false); setZoomScale(1)
         setCur({ x:700, y:320, visible:false, pressed:false })
-        await sleep(eager ? 500 : 2600); if (!alive) return
+        await sleep(idleDelay(eager, lookahead)); if (!alive) return
 
         // cursor → All Filters button
         setCur({ x:940, y:PY+70, visible:true, pressed:false })
@@ -168,7 +179,7 @@ export default function FoxThumbnail({ eager = false, snapshot }: FoxThumbnailPr
     }
     loop()
     return () => { alive = false }
-  }, [inView, eager, snapshot])
+  }, [inView, eager, lookahead, snapshot])
 
   const rows = isFiltered
     ? ALL_USERS.filter(u => u.status === 'ACTIVE' && u.role === 'Project Manager')

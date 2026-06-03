@@ -1,0 +1,15 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 1728 1117" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="blue tea cup" clip-path="url(#clip0_0_4)">
+<rect width="1728" height="1117" fill="#FCE9F5"/>
+<path id="Ellipse 37" d="M1764.28 321.311C1743.93 362.694 1630.7 353.871 1512 295.5C1393.3 237.129 1314.1 151.312 1334.45 109.93C1354.8 68.5471 1467.52 82.3194 1586.21 140.691C1704.91 199.062 1784.63 279.929 1764.28 321.311Z" fill="var(--fill-0, #5CA8D8)"/>
+<path id="Vector 137" d="M1498 287.501C1345.6 202.301 1316.5 185.176 1325.5 161.676C1392.5 147 1654 287.501 1719.5 338.676C1780.7 434.276 1600.33 327.334 1498 287.501Z" fill="var(--fill-0, #A1B71A)" stroke="var(--stroke-0, #A1B71A)"/>
+<path id="Vector 134" d="M1444.8 501.626C1234.37 411.067 1280.14 214.799 1331 128C1447.52 327.05 1665.25 349.829 1757.88 336.323C1643.58 527.058 1501.54 525.998 1444.8 501.626Z" fill="var(--fill-0, #C7E5F8)"/>
+<ellipse id="Ellipse 41" cx="84" cy="100.5" rx="84" ry="100.5" transform="matrix(-1 0 0 1 1310 128)" fill="var(--fill-0, #C7E5F8)"/>
+<path id="Ellipse 42" d="M1180.3 226.749C1180.3 241.909 1189.75 298.208 1231.6 287.949C1256.7 287.949 1285.15 247.309 1285.15 232.149C1285.15 216.988 1272.55 170.858 1231.6 167.349C1171.17 162.17 1180.3 211.588 1180.3 226.749Z" fill="var(--fill-0, #FCE9F5)"/>
+</g>
+<defs>
+<clipPath id="clip0_0_4">
+<rect width="1728" height="1117" fill="white"/>
+</clipPath>
+</defs>
+</svg>
