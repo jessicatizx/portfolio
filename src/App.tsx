@@ -1,4 +1,5 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
 import SplashScreen from './components/SplashScreen'
 import InstagramThumbnail from './components/InstagramThumbnail'
 import FoxThumbnail from './components/FoxThumbnail'
@@ -88,10 +89,7 @@ function Hero({ splashReady }: { splashReady: boolean }) {
     containerRef: heroTextRef,
     enabled: splashReady && !reducedMotion,
     onVisit: (id, anchor) => {
-      const root = heroTextRef.current
-      if (!root) return
-      const c = root.getBoundingClientRect()
-      setDemoAnchor({ x: c.left + anchor.x, y: c.top + anchor.y })
+      setDemoAnchor({ x: anchor.x, y: anchor.y })
       setInsectCue(id)
     },
     onLeave: id => {
@@ -129,8 +127,14 @@ function Hero({ splashReady }: { splashReady: boolean }) {
   }, [insectCue])
 
   return (
-    <section className="relative mx-auto max-w-content overflow-x-clip px-20 py-24">
+    <>
+      {!reducedMotion &&
+        createPortal(
+          <HeroInsectSprite transform={insectTransform} />,
+          document.body
+        )}
 
+      <section className="relative mx-auto max-w-content overflow-x-clip px-20 py-24">
       {/* Sketch filter def — hidden */}
       <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden>
         <defs>
@@ -170,8 +174,6 @@ function Hero({ splashReady }: { splashReady: boolean }) {
       </FloatIcon>
 
       <div ref={heroTextRef} className="relative max-w-hero overflow-visible">
-        {!reducedMotion && <HeroInsectSprite transform={insectTransform} />}
-
         {/* Flowers — appear on hover of "crafting little surprises" */}
         {/* Top: pink tulips — above "designer" */}
         <img src="/flower-tulip-pink.png" aria-hidden alt=""
@@ -287,6 +289,7 @@ function Hero({ splashReady }: { splashReady: boolean }) {
         y={overlayPos('jessica').y}
       />
     </section>
+    </>
   )
 }
 

@@ -21,7 +21,7 @@ const FRAMES = {
   waitNo: '/splash/14-wait-no.png',
   jessicaCorrection: '/splash/11-jessica-correction.png',
   justJessica: '/splash/12-just-jessica.png',
-  jessicaTi: '/splash/13-jessica-ti.png',
+  jessicaTi: '/splash/13-jessica-ti.png?v=2',
 } as const
 
 function Frame({
@@ -42,6 +42,23 @@ function Frame({
       className={`tea-splash__frame${className ? ` ${className}` : ''}`}
       style={style}
     />
+  )
+}
+
+/** Scales name/text PNGs on small viewports without fighting frame keyframe transforms. */
+function TextFrame({
+  src,
+  className,
+  layerClassName,
+}: {
+  src: string
+  className: string
+  layerClassName?: string
+}) {
+  return (
+    <div className={`tea-splash__text-layer${layerClassName ? ` ${layerClassName}` : ''}`}>
+      <Frame src={src} className={className} />
+    </div>
   )
 }
 
@@ -101,11 +118,31 @@ export default function SplashScreen({ onDone }: Props) {
             <Frame src={FRAMES.teaRise} className="tea-splash__frame--tea-rise" />
             <Frame src={FRAMES.teaRiseMore} className="tea-splash__frame--tea-rise-more" />
             <Frame src={FRAMES.teaFull} className="tea-splash__frame--tea-full" />
-            <Frame src={FRAMES.jessicaTea} className="tea-splash__frame--jessica-tea" />
-            <Frame src={FRAMES.waitNo} className="tea-splash__frame--wait-no" />
-            <Frame src={FRAMES.jessicaCorrection} className="tea-splash__frame--jessica-correction" />
-            <Frame src={FRAMES.justJessica} className="tea-splash__frame--just-jessica" />
-            <Frame src={FRAMES.jessicaTi} className="tea-splash__frame--jessica-ti" />
+            <TextFrame
+              src={FRAMES.jessicaTea}
+              className="tea-splash__frame--jessica-tea"
+              layerClassName="tea-splash__text-layer--jessica-tea"
+            />
+            <TextFrame
+              src={FRAMES.waitNo}
+              className="tea-splash__frame--wait-no"
+              layerClassName="tea-splash__text-layer--wait-no"
+            />
+            <TextFrame
+              src={FRAMES.jessicaCorrection}
+              className="tea-splash__frame--jessica-correction"
+              layerClassName="tea-splash__text-layer--jessica-correction"
+            />
+            <TextFrame
+              src={FRAMES.justJessica}
+              className="tea-splash__frame--just-jessica"
+              layerClassName="tea-splash__text-layer--just-jessica"
+            />
+            <TextFrame
+              src={FRAMES.jessicaTi}
+              className="tea-splash__frame--jessica-ti"
+              layerClassName="tea-splash__text-layer--jessica-ti"
+            />
           </>
         )}
       </div>
