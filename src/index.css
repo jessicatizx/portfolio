@@ -210,17 +210,84 @@
 }
 
 @media (max-width: 768px) {
+  .tea-splash__sequence--desktop {
+    display: none;
+  }
+
+  .tea-splash__sequence--mobile {
+    display: block;
+  }
+
+  .tea-splash__frame--final-desktop {
+    display: none;
+  }
+
+  .tea-splash__frame--final-mobile {
+    display: block;
+  }
+
+  /* Cup flight tuned for iPhone artboards */
+  .tea-splash__sequence--mobile .tea-splash__frame--pink-approach {
+    transform-origin: 36% 78%;
+  }
+
+  .tea-splash__sequence--mobile .tea-splash__frame--blue-approach {
+    transform-origin: 64% 22%;
+  }
+
+  /* Fluid tea fill — four rise beats + full (Figma iPhone 7–11) */
+  .tea-splash__sequence--mobile .tea-splash__frame--m-tea-rise-1 {
+    animation: splash-m-tea-rise-1 var(--splash-dur) forwards;
+    z-index: 5;
+  }
+
+  .tea-splash__sequence--mobile .tea-splash__frame--m-tea-rise-2 {
+    animation: splash-m-tea-rise-2 var(--splash-dur) forwards;
+    z-index: 5;
+  }
+
+  .tea-splash__sequence--mobile .tea-splash__frame--m-tea-rise-3 {
+    animation: splash-m-tea-rise-3 var(--splash-dur) forwards;
+    z-index: 5;
+  }
+
+  .tea-splash__sequence--mobile .tea-splash__frame--m-tea-rise-4 {
+    animation: splash-m-tea-rise-4 var(--splash-dur) forwards;
+    z-index: 5;
+  }
+
+  .tea-splash__sequence--mobile .tea-splash__frame--m-tea-full {
+    animation: splash-m-tea-full var(--splash-dur) forwards;
+    z-index: 6;
+  }
+
+  .tea-splash__sequence--mobile .tea-splash__frame--m-jessica-tea {
+    animation: splash-m-jessica-tea var(--splash-dur) forwards;
+    z-index: 7;
+  }
+
+  .tea-splash__sequence--mobile .tea-splash__frame--m-wait-no {
+    animation: splash-m-wait-no var(--splash-dur) forwards;
+    z-index: 8;
+  }
+
+  .tea-splash__sequence--mobile .tea-splash__frame--m-jessica-ti {
+    transform-origin: 50% 50%;
+    animation: splash-m-jessica-ti var(--splash-dur) forwards;
+    z-index: 8;
+  }
+
   .tea-splash {
     --splash-text-scale: 0.76;
     --splash-text-origin-y: 46%;
   }
 
-  .tea-splash__text-layer {
+  .tea-splash__sequence--desktop .tea-splash__text-layer {
     transform: scale(var(--splash-text-scale));
     transform-origin: 50% var(--splash-text-origin-y);
   }
 
-  .tea-splash__text-layer .tea-splash__frame {
+  .tea-splash__sequence--desktop .tea-splash__text-layer .tea-splash__frame {
     object-fit: contain;
     object-position: center 42%;
   }
@@ -241,6 +308,20 @@
   .tea-splash__text-layer .tea-splash__frame {
     object-position: center 40%;
   }
+}
+
+/* Desktop vs mobile splash sequences */
+.tea-splash__sequence {
+  position: absolute;
+  inset: 0;
+}
+
+.tea-splash__sequence--mobile {
+  display: none;
+}
+
+.tea-splash__frame--final-mobile {
+  display: none;
 }
 
 .tea-splash__skip {
@@ -665,6 +746,97 @@
   100% { opacity: 0.5; }
 }
 
+/* Mobile — tea rise chain (393×852 artboards) */
+@keyframes splash-m-tea-rise-1 {
+  0%,
+  54% { opacity: 0; }
+  55% { opacity: 1; }
+  58%,
+  100% { opacity: 0; }
+}
+
+@keyframes splash-m-tea-rise-2 {
+  0%,
+  57% { opacity: 0; }
+  58% { opacity: 1; }
+  61%,
+  100% { opacity: 0; }
+}
+
+@keyframes splash-m-tea-rise-3 {
+  0%,
+  60% { opacity: 0; }
+  61% { opacity: 1; }
+  64%,
+  100% { opacity: 0; }
+}
+
+@keyframes splash-m-tea-rise-4 {
+  0%,
+  63% { opacity: 0; }
+  64% { opacity: 1; }
+  67%,
+  100% { opacity: 0; }
+}
+
+@keyframes splash-m-tea-full {
+  0%,
+  66% { opacity: 0; }
+  67% { opacity: 1; }
+  71% { opacity: 1; }
+  73%,
+  100% { opacity: 0; }
+}
+
+@keyframes splash-m-jessica-tea {
+  0%,
+  64% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  67%,
+  76% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  80%,
+  100% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes splash-m-wait-no {
+  0%,
+  77% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  79%,
+  93% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  95%,
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes splash-m-jessica-ti {
+  0%,
+  96% {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  98%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .tea-splash--reduced .tea-splash__approach {
   display: none;
 }
@@ -683,6 +855,17 @@
   .tea-splash:not(.tea-splash--reduced) .tea-splash__approach {
     animation: none !important;
     opacity: 0 !important;
+  }
+
+  @media (max-width: 768px) {
+    .tea-splash--reduced .tea-splash__frame--final-desktop {
+      display: none !important;
+    }
+
+    .tea-splash--reduced .tea-splash__frame--final-mobile {
+      display: block !important;
+      opacity: 1 !important;
+    }
   }
 }
 

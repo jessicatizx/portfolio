@@ -6,8 +6,8 @@ interface Props {
 
 const STORAGE_KEY = 'tea-splash-seen'
 
-/** Figma artboards (1728×1117) — exact exports from meep file */
-const FRAMES = {
+/** Desktop artboards (1728×1117) */
+const DESKTOP_FRAMES = {
   pinkApproach: '/splash/01-pink-approach.svg',
   blueApproach: '/splash/02-blue-approach.svg',
   collide: '/splash/03-collide.svg?v=2',
@@ -22,6 +22,24 @@ const FRAMES = {
   jessicaCorrection: '/splash/11-jessica-correction.png',
   justJessica: '/splash/12-just-jessica.png',
   jessicaTi: '/splash/13-jessica-ti.png?v=2',
+} as const
+
+/** iPhone artboards (393×852) — extra tea-rise beats for fluid fill */
+const MOBILE_FRAMES = {
+  pinkApproach: '/splash/mobile/m01-pink-approach.svg',
+  blueApproach: '/splash/mobile/m02-blue-approach.svg',
+  collide: '/splash/mobile/m03-collide.svg',
+  spill: '/splash/mobile/m04-spill.svg',
+  fall: '/splash/mobile/m05-fall.svg',
+  disappear: '/splash/mobile/m06-disappear.png',
+  teaRise1: '/splash/mobile/m07-tea-rise.svg',
+  teaRise2: '/splash/mobile/m08-tea-rise-2.svg',
+  teaRise3: '/splash/mobile/m09-tea-rise-3.svg',
+  teaRise4: '/splash/mobile/m10-tea-rise-4.svg',
+  teaFull: '/splash/mobile/m11-tea-full.svg',
+  jessicaTea: '/splash/mobile/m12-jessica-tea.png',
+  waitNo: '/splash/mobile/m13-wait-no.png',
+  jessicaTi: '/splash/mobile/m14-jessica-ti.png',
 } as const
 
 function Frame({
@@ -45,7 +63,6 @@ function Frame({
   )
 }
 
-/** Scales name/text PNGs on small viewports without fighting frame keyframe transforms. */
 function TextFrame({
   src,
   className,
@@ -58,6 +75,74 @@ function TextFrame({
   return (
     <div className={`tea-splash__text-layer${layerClassName ? ` ${layerClassName}` : ''}`}>
       <Frame src={src} className={className} />
+    </div>
+  )
+}
+
+function DesktopSequence() {
+  const F = DESKTOP_FRAMES
+  return (
+    <div className="tea-splash__sequence tea-splash__sequence--desktop" aria-hidden>
+      <div className="tea-splash__approach">
+        <Frame src={F.pinkApproach} className="tea-splash__frame--pink-approach" />
+        <Frame src={F.blueApproach} className="tea-splash__frame--blue-approach" />
+      </div>
+      <Frame src={F.collide} className="tea-splash__frame--collide" />
+      <Frame src={F.spill} className="tea-splash__frame--spill" />
+      <Frame src={F.fall} className="tea-splash__frame--fall" />
+      <Frame src={F.disappear} className="tea-splash__frame--disappear" />
+      <Frame src={F.teaRise} className="tea-splash__frame--tea-rise" />
+      <Frame src={F.teaRiseMore} className="tea-splash__frame--tea-rise-more" />
+      <Frame src={F.teaFull} className="tea-splash__frame--tea-full" />
+      <TextFrame
+        src={F.jessicaTea}
+        className="tea-splash__frame--jessica-tea"
+        layerClassName="tea-splash__text-layer--jessica-tea"
+      />
+      <TextFrame
+        src={F.waitNo}
+        className="tea-splash__frame--wait-no"
+        layerClassName="tea-splash__text-layer--wait-no"
+      />
+      <TextFrame
+        src={F.jessicaCorrection}
+        className="tea-splash__frame--jessica-correction"
+        layerClassName="tea-splash__text-layer--jessica-correction"
+      />
+      <TextFrame
+        src={F.justJessica}
+        className="tea-splash__frame--just-jessica"
+        layerClassName="tea-splash__text-layer--just-jessica"
+      />
+      <TextFrame
+        src={F.jessicaTi}
+        className="tea-splash__frame--jessica-ti"
+        layerClassName="tea-splash__text-layer--jessica-ti"
+      />
+    </div>
+  )
+}
+
+function MobileSequence() {
+  const F = MOBILE_FRAMES
+  return (
+    <div className="tea-splash__sequence tea-splash__sequence--mobile" aria-hidden>
+      <div className="tea-splash__approach">
+        <Frame src={F.pinkApproach} className="tea-splash__frame--pink-approach" />
+        <Frame src={F.blueApproach} className="tea-splash__frame--blue-approach" />
+      </div>
+      <Frame src={F.collide} className="tea-splash__frame--collide" />
+      <Frame src={F.spill} className="tea-splash__frame--spill" />
+      <Frame src={F.fall} className="tea-splash__frame--fall" />
+      <Frame src={F.disappear} className="tea-splash__frame--disappear" />
+      <Frame src={F.teaRise1} className="tea-splash__frame--m-tea-rise-1" />
+      <Frame src={F.teaRise2} className="tea-splash__frame--m-tea-rise-2" />
+      <Frame src={F.teaRise3} className="tea-splash__frame--m-tea-rise-3" />
+      <Frame src={F.teaRise4} className="tea-splash__frame--m-tea-rise-4" />
+      <Frame src={F.teaFull} className="tea-splash__frame--m-tea-full" />
+      <Frame src={F.jessicaTea} className="tea-splash__frame--m-jessica-tea" />
+      <Frame src={F.waitNo} className="tea-splash__frame--m-wait-no" />
+      <Frame src={F.jessicaTi} className="tea-splash__frame--m-jessica-ti" />
     </div>
   )
 }
@@ -102,47 +187,20 @@ export default function SplashScreen({ onDone }: Props) {
     >
       <div className="tea-splash__stage">
         {reducedMotion ? (
-          <Frame src={FRAMES.jessicaTi} className="tea-splash__frame--final" />
+          <>
+            <Frame
+              src={DESKTOP_FRAMES.jessicaTi}
+              className="tea-splash__frame--final tea-splash__frame--final-desktop"
+            />
+            <Frame
+              src={MOBILE_FRAMES.jessicaTi}
+              className="tea-splash__frame--final tea-splash__frame--final-mobile"
+            />
+          </>
         ) : (
           <>
-            {/* Sequence 1 — opposing entrances (Figma keyframes 01 + 02) */}
-            <div className="tea-splash__approach" aria-hidden>
-              <Frame src={FRAMES.pinkApproach} className="tea-splash__frame--pink-approach" />
-              <Frame src={FRAMES.blueApproach} className="tea-splash__frame--blue-approach" />
-            </div>
-
-            <Frame src={FRAMES.collide} className="tea-splash__frame--collide" />
-            <Frame src={FRAMES.spill} className="tea-splash__frame--spill" />
-            <Frame src={FRAMES.fall} className="tea-splash__frame--fall" />
-            <Frame src={FRAMES.disappear} className="tea-splash__frame--disappear" />
-            <Frame src={FRAMES.teaRise} className="tea-splash__frame--tea-rise" />
-            <Frame src={FRAMES.teaRiseMore} className="tea-splash__frame--tea-rise-more" />
-            <Frame src={FRAMES.teaFull} className="tea-splash__frame--tea-full" />
-            <TextFrame
-              src={FRAMES.jessicaTea}
-              className="tea-splash__frame--jessica-tea"
-              layerClassName="tea-splash__text-layer--jessica-tea"
-            />
-            <TextFrame
-              src={FRAMES.waitNo}
-              className="tea-splash__frame--wait-no"
-              layerClassName="tea-splash__text-layer--wait-no"
-            />
-            <TextFrame
-              src={FRAMES.jessicaCorrection}
-              className="tea-splash__frame--jessica-correction"
-              layerClassName="tea-splash__text-layer--jessica-correction"
-            />
-            <TextFrame
-              src={FRAMES.justJessica}
-              className="tea-splash__frame--just-jessica"
-              layerClassName="tea-splash__text-layer--just-jessica"
-            />
-            <TextFrame
-              src={FRAMES.jessicaTi}
-              className="tea-splash__frame--jessica-ti"
-              layerClassName="tea-splash__text-layer--jessica-ti"
-            />
+            <DesktopSequence />
+            <MobileSequence />
           </>
         )}
       </div>
