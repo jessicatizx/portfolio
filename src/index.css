@@ -209,6 +209,20 @@
   transform-origin: 50% 50%;
 }
 
+/* Desktop vs mobile splash sequences (defaults before breakpoint overrides) */
+.tea-splash__sequence {
+  position: absolute;
+  inset: 0;
+}
+
+.tea-splash__sequence--mobile {
+  display: none;
+}
+
+.tea-splash__frame--final-mobile {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .tea-splash__sequence--desktop {
     display: none;
@@ -308,20 +322,6 @@
   .tea-splash__text-layer .tea-splash__frame {
     object-position: center 40%;
   }
-}
-
-/* Desktop vs mobile splash sequences */
-.tea-splash__sequence {
-  position: absolute;
-  inset: 0;
-}
-
-.tea-splash__sequence--mobile {
-  display: none;
-}
-
-.tea-splash__frame--final-mobile {
-  display: none;
 }
 
 .tea-splash__skip {
