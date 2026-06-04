@@ -142,6 +142,7 @@ function MobileSequence() {
       <Frame src={F.teaFull} className="tea-splash__frame--m-tea-full" />
       <Frame src={F.jessicaTea} className="tea-splash__frame--m-jessica-tea" />
       <Frame src={F.waitNo} className="tea-splash__frame--m-wait-no" />
+      <Frame src={F.jessicaTea} className="tea-splash__frame--m-jessica-tea-return" />
       <Frame src={F.jessicaTi} className="tea-splash__frame--m-jessica-ti" />
     </div>
   )
