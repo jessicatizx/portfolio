@@ -59,13 +59,22 @@ function frameIndex(phase: Phase, local: number): number {
   }
 }
 
-/** Infinity (frame 0) sits higher; circle (frame 9) stays at Figma ref. */
+/** Infinity (frame 0) sits higher and slightly smaller; circle (frame 9) stays at Figma ref. */
 const MARK_TOP = { meta: 20, circle: 32 } as const
+const MARK_WIDTH = { meta: 34, circle: 40 } as const
+const MARK_MAX_W = { meta: 560, circle: 660 } as const
 
 function frameTop(frame: number): string {
   const t = frame / (FRAMES.length - 1)
   const top = MARK_TOP.meta + t * (MARK_TOP.circle - MARK_TOP.meta)
   return `${top}%`
+}
+
+function frameWidth(frame: number): { width: string; maxWidth: number } {
+  const t = frame / (FRAMES.length - 1)
+  const width = MARK_WIDTH.meta + t * (MARK_WIDTH.circle - MARK_WIDTH.meta)
+  const maxWidth = MARK_MAX_W.meta + t * (MARK_MAX_W.circle - MARK_MAX_W.meta)
+  return { width: `${width}%`, maxWidth: Math.round(maxWidth) }
 }
 
 export default function MetaMorphThumbnail({ compact = false }: { compact?: boolean }) {
@@ -117,6 +126,7 @@ export default function MetaMorphThumbnail({ compact = false }: { compact?: bool
   }, [active, reducedMotion])
 
   const aspectRatio = '1728 / 1117'
+  const markSize = frameWidth(frame)
 
   return (
     <div
@@ -143,8 +153,8 @@ export default function MetaMorphThumbnail({ compact = false }: { compact?: bool
           position: 'absolute',
           left: '50%',
           top: frameTop(frame),
-          width: '40%',
-          maxWidth: 660,
+          width: markSize.width,
+          maxWidth: markSize.maxWidth,
           transform: 'translateX(-50%)',
         }}
       />
