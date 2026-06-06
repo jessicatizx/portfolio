@@ -2,13 +2,14 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import SplashScreen from './components/SplashScreen'
 import InstagramThumbnail from './components/InstagramThumbnail'
+import MetaMorphThumbnail from './components/MetaMorphThumbnail'
 import FoxThumbnail from './components/FoxThumbnail'
 import LetterboxdThumbnail from './components/LetterboxdThumbnail'
 import ProjectChip from './components/ProjectChip'
-import InstagramCaseStudy from './pages/InstagramCaseStudy'
-import FoxCaseStudy from './pages/FoxCaseStudy'
-import MuseumPage from './pages/MuseumPage'
-import AboutPage from './pages/AboutPage'
+const InstagramCaseStudy = React.lazy(() => import('./pages/InstagramCaseStudy'))
+const FoxCaseStudy = React.lazy(() => import('./pages/FoxCaseStudy'))
+const MuseumPage = React.lazy(() => import('./pages/MuseumPage'))
+const AboutPage = React.lazy(() => import('./pages/AboutPage'))
 
 import FlowerCursor from './components/FlowerCursor'
 import TeaSpillFooter from './components/TeaSpillFooter'
@@ -72,6 +73,52 @@ function FloatIcon({ wobbleCls, traverseCls, top, label, children }: {
 
 function cueClass(active: boolean) {
   return `hero-interactive hero-underline cursor-default${active ? ' hero-interactive--active' : ''}`
+}
+
+function PageShell({ children }: { children: React.ReactNode }) {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen bg-bg" aria-busy="true" />}>
+      {children}
+    </React.Suspense>
+  )
+}
+
+class PageErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  state = { hasError: false }
+
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-bg flex items-center justify-center px-6">
+          <div className="max-w-md text-center">
+            <p className="font-serif text-2xl text-ink-primary mb-3">This page failed to load</p>
+            <p className="font-inter text-sm text-ink-secondary mb-6">
+              Try refreshing. If it keeps happening, restart the dev server with{' '}
+              <code className="text-xs">npm run dev</code>.
+            </p>
+            <button
+              type="button"
+              className="rounded-lg bg-ink-primary px-4 py-2 font-inter text-sm text-white"
+              onClick={() => {
+                this.setState({ hasError: false })
+                window.location.reload()
+              }}
+            >
+              Refresh
+            </button>
+          </div>
+        </div>
+      )
+    }
+    return this.props.children
+  }
 }
 
 // ── Hero ─────────────────────────────────────────────────────────
@@ -294,20 +341,72 @@ function Hero({ splashReady }: { splashReady: boolean }) {
 }
 
 // ── Projects ─────────────────────────────────────────────────────
-const projects = [
-  { id: 'instagram',  Thumb: InstagramThumbnail, label: 'Instagram',        year: '2025', darkChip: false, caption: 'Designing for teens during Australia\'s world-first social media ban' },
-  { id: 'fox',        Thumb: FoxThumbnail,        label: 'Fox Entertainment', year: '2024', darkChip: false, caption: 'Revolutionizing vendor management for enhanced efficiency' },
-  { id: 'letterboxd', Thumb: LetterboxdThumbnail, label: 'Letterboxd',        year: '2024', darkChip: false, caption: 'Social film logging for the people who treat watching as a ritual' },
+type ProjectId = 'meta' | 'instagram' | 'fox' | 'letterboxd'
+
+const projects: Array<{
+  id: ProjectId
+  label: string
+  year: string
+  darkChip: boolean
+  caption: string
+  navigable: boolean
+}> = [
+  {
+    id: 'meta',
+    label: 'Meta',
+    year: '2026',
+    darkChip: false,
+    caption: 'Designing AI systems people can trust and use with confidence',
+    navigable: false,
+  },
+  {
+    id: 'instagram',
+    label: 'Instagram',
+    year: '2025',
+    darkChip: false,
+    caption: 'Defining how teens navigate the world\'s first social media ban',
+    navigable: true,
+  },
+  {
+    id: 'fox',
+    label: 'Fox Entertainment',
+    year: '2024',
+    darkChip: false,
+    caption: 'Revolutionizing vendor management for enhanced efficiency',
+    navigable: true,
+  },
+  {
+    id: 'letterboxd',
+    label: 'Letterboxd',
+    year: '2024',
+    darkChip: false,
+    caption: 'Reimagining social connection around film discovery and discussion',
+    navigable: false,
+  },
 ]
 
-const CARD_BADGES: Record<string, { text: string; bg: string; border: string; color: string }> = {
+const CARD_BADGES: Record<ProjectId, { text: string; bg: string; border: string; color: string }> = {
+  meta:       { text: 'coming soon',  bg: 'rgba(140,190,255,0.38)', border: 'rgba(90,150,230,0.28)', color: '#2a5080' },
   instagram:  { text: 'check it out!', bg: 'rgba(228,175,200,0.38)', border: 'rgba(210,140,170,0.28)', color: '#7a3a55' },
   fox:        { text: 'now showing',   bg: 'rgba(228,190,155,0.38)', border: 'rgba(200,155,110,0.28)', color: '#6a4020' },
   letterboxd: { text: 'in production', bg: 'rgba(195,180,232,0.38)', border: 'rgba(160,140,210,0.28)', color: '#4a3570' },
 }
 
+function ProjectThumb({ id, splashDone }: { id: ProjectId; splashDone: boolean }) {
+  switch (id) {
+    case 'meta':
+      return <MetaMorphThumbnail compact />
+    case 'instagram':
+      return <InstagramThumbnail ready={splashDone} compact />
+    case 'fox':
+      return <FoxThumbnail lookahead compact />
+    case 'letterboxd':
+      return <LetterboxdThumbnail compact />
+  }
+}
+
 function Projects({ onNavigate, splashDone }: { onNavigate: (page: SitePage) => void; splashDone: boolean }) {
-  const [hoveredId, setHoveredId] = React.useState<string | null>(null)
+  const [hoveredId, setHoveredId] = React.useState<ProjectId | null>(null)
   const [pos,       setPos]       = React.useState({ x: 0, y: 0 })
 
   return (
@@ -325,34 +424,45 @@ function Projects({ onNavigate, splashDone }: { onNavigate: (page: SitePage) => 
         <div className="flex-1" style={{ height: '0.5px', background: 'rgba(0,0,0,0.09)' }} />
       </div>
 
-      <div className="flex flex-col gap-8">
-        {projects.map(({ id, Thumb, label, year, darkChip, caption }) => (
-          <div key={id} className="relative">
+      <div className="grid grid-cols-2 gap-6">
+        {projects.map(({ id, label, year, darkChip, caption, navigable }) => (
+          <div
+            key={id}
+            className="relative min-w-0"
+            onMouseEnter={() => setHoveredId(id)}
+            onMouseLeave={() => setHoveredId(null)}
+          >
             <div className="relative">
               <article
                 data-no-flower
                 className="relative overflow-hidden rounded-card transition-all duration-300 hover:-translate-y-0.5 shadow-[0_1px_3px_rgba(0,0,0,0.06),0_4px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.08),0_12px_32px_rgba(0,0,0,0.08)]"
-                onMouseEnter={() => setHoveredId(id)}
-                onMouseLeave={() => setHoveredId(null)}
-                onMouseMove={e  => setPos({ x: e.clientX, y: e.clientY })}
+                onMouseMove={e => setPos({ x: e.clientX, y: e.clientY })}
               >
-                <button
-                  className="block w-full text-left"
-                  onClick={() => (id === 'instagram' || id === 'fox') && onNavigate(id)}
-                  style={{ cursor: id === 'instagram' || id === 'fox' ? 'pointer' : 'default' }}
-                >
-                  {id === 'instagram'
-                    ? <InstagramThumbnail ready={splashDone} />
-                    : id === 'fox'
-                      ? <FoxThumbnail lookahead />
-                      : <Thumb />}
-                </button>
+                {navigable ? (
+                  <button
+                    className="block w-full text-left"
+                    onClick={() => (id === 'instagram' || id === 'fox') && onNavigate(id)}
+                  >
+                    <ProjectThumb id={id} splashDone={splashDone} />
+                  </button>
+                ) : (
+                  <div className="block w-full">
+                    <ProjectThumb id={id} splashDone={splashDone} />
+                  </div>
+                )}
               </article>
-              <div className="absolute bottom-6 left-6" style={{ zIndex: 50 }}>
+              <div className="absolute bottom-4 left-4" style={{ zIndex: 50 }}>
                 <ProjectChip label={label} year={year} dark={darkChip} />
               </div>
             </div>
-            <p className="mt-3 pl-1 font-hand text-[15px] text-ink-tertiary leading-relaxed">
+            <p
+              className={`pl-1 font-inter text-[13px] text-ink-tertiary leading-relaxed transition-all duration-200 ease-out ${
+                hoveredId === id
+                  ? 'mt-2.5 opacity-100 max-h-24'
+                  : 'mt-0 opacity-0 max-h-0 overflow-hidden'
+              }`}
+              aria-hidden={hoveredId !== id}
+            >
               {caption}
             </p>
           </div>
@@ -398,28 +508,38 @@ export default function App() {
   const [splashDone, setSplashDone] = React.useState(false)
 
   if (page === 'instagram') {
-    return <InstagramCaseStudy onBack={() => setPage('home')} onNavigate={setPage} />
+    return (
+      <PageErrorBoundary>
+        <PageShell>
+          <InstagramCaseStudy onBack={() => setPage('home')} onNavigate={setPage} />
+        </PageShell>
+      </PageErrorBoundary>
+    )
   }
 
   if (page === 'fox') {
-    return <FoxCaseStudy onBack={() => setPage('home')} onNavigate={setPage} />
+    return (
+      <PageShell>
+        <FoxCaseStudy onBack={() => setPage('home')} onNavigate={setPage} />
+      </PageShell>
+    )
   }
 
   if (page === 'museum') {
     return (
-      <>
+      <PageShell>
         <FlowerCursor />
         <MuseumPage onNavigate={setPage} />
-      </>
+      </PageShell>
     )
   }
 
   if (page === 'about') {
     return (
-      <>
+      <PageShell>
         <FlowerCursor />
         <AboutPage onNavigate={setPage} />
-      </>
+      </PageShell>
     )
   }
 

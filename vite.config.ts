@@ -3,4 +3,16 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    port: 5173,
+    strictPort: true,
+  },
+  optimizeDeps: {
+    include: ['flubber'],
+  },
+  build: {
+    commonjsOptions: {
+      include: [/flubber/, /node_modules/],
+    },
+  },
 })

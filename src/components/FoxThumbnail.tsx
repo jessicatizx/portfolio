@@ -77,6 +77,8 @@ interface FoxThumbnailProps {
   lookahead?: boolean
   /** Freeze on a key frame (no animation or cursor). */
   snapshot?: FoxThumbnailSnapshot
+  /** Smaller tile for project grid layout. */
+  compact?: boolean
 }
 
 function idleDelay(eager: boolean, lookahead: boolean): number {
@@ -86,7 +88,7 @@ function idleDelay(eager: boolean, lookahead: boolean): number {
 }
 
 // ── Component ──
-export default function FoxThumbnail({ eager = false, lookahead = false, snapshot }: FoxThumbnailProps) {
+export default function FoxThumbnail({ eager = false, lookahead = false, snapshot, compact = false }: FoxThumbnailProps) {
   const frozen = snapshot ? SNAPSHOT_STATE[snapshot] : null
   const wrapRef = React.useRef<HTMLDivElement>(null)
   const [s, setS] = React.useState(1)

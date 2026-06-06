@@ -4,15 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "bake:morph": "node --experimental-strip-types scripts/bake-meta-morph.ts",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "flubber": "^0.4.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@types/flubber": "^0.4.0",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.1",

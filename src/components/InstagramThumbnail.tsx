@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function InstagramThumbnail({ ready = false }: { ready?: boolean }) {
+export default function InstagramThumbnail({ ready = false, compact = false }: { ready?: boolean; compact?: boolean }) {
   const ref = React.useRef<HTMLDivElement>(null)
   const [hovered, setHovered] = React.useState(false)
   const [inView, setInView] = React.useState(false)
@@ -21,7 +21,8 @@ export default function InstagramThumbnail({ ready = false }: { ready?: boolean 
   return (
     <div
       ref={ref}
-      className={`relative w-full overflow-hidden rounded-card${playing ? ' ig-thumb--playing' : ''}`}
+      className={`relative w-full overflow-hidden${compact ? '' : ' rounded-card'}${playing ? ' ig-thumb--playing' : ''}`}
+      style={compact ? { aspectRatio: '1024 / 641' } : undefined}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -59,7 +60,7 @@ export default function InstagramThumbnail({ ready = false }: { ready?: boolean 
       <img
         src="/instagram-thumb.png"
         alt="Instagram — What does the world's first social media ban look like?"
-        className="ig-thumb__img block h-auto w-full"
+        className="ig-thumb__img block w-full h-auto"
         style={{
           transformOrigin: 'center 45%',
           transform: hovered

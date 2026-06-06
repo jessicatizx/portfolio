@@ -1,0 +1,54 @@
+.meta-morph {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 36px;
+  isolation: isolate;
+  contain: layout paint style;
+}
+
+.meta-morph__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('/meta-morph/bg-thumb.jpg');
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
+}
+
+.meta-morph__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.14;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+
+/* Figma end frame 233:430 — mark at 34.5% top, 613px wide on 1728 artboard */
+.meta-morph__svg {
+  position: absolute;
+  left: 50%;
+  top: 32%;
+  width: 40%;
+  max-width: 660px;
+  height: auto;
+  transform: translateX(-50%);
+  transform-origin: 50% 50%;
+  overflow: visible;
+}
+
+.meta-morph__svg path {
+  transform-origin: 200px 130px;
+  transform-box: fill-box;
+}
+
+.meta-morph--tile {
+  border-radius: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meta-morph__grain {
+    opacity: 0.08;
+  }
+}
