@@ -16,6 +16,7 @@ import TeaSpillFooter from './components/TeaSpillFooter'
 import JessicaFilmStrip from './components/JessicaFilmStrip'
 import {
   HeroInsectSprite,
+  measureHeroCueAnchor,
   useHeroInsectTour,
   usePrefersReducedMotion,
   type HeroCueId,
@@ -136,8 +137,10 @@ function Hero({ splashReady }: { splashReady: boolean }) {
     containerRef: heroTextRef,
     enabled: splashReady && !reducedMotion,
     onVisit: (id, anchor) => {
-      setDemoAnchor({ x: anchor.x, y: anchor.y })
-      setInsectCue(id)
+      setDemoAnchor(prev =>
+        Math.hypot(prev.x - anchor.x, prev.y - anchor.y) < 0.5 ? prev : anchor,
+      )
+      setInsectCue(prev => (prev === id ? prev : id))
     },
     onLeave: id => {
       setInsectCue(prev => (prev === id ? null : prev))
@@ -165,12 +168,21 @@ function Hero({ splashReady }: { splashReady: boolean }) {
       const root = heroTextRef.current
       const el = root?.querySelector<HTMLElement>(`[data-hero-cue="${insectCue}"]`)
       if (!root || !el) return
-      const r = el.getBoundingClientRect()
-      setDemoAnchor({ x: r.left + r.width / 2, y: r.bottom - 6 })
+      const anchor = measureHeroCueAnchor(el)
+      setDemoAnchor(prev =>
+        Math.hypot(prev.x - anchor.x, prev.y - anchor.y) < 0.5 ? prev : anchor,
+      )
     }
     update()
     window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
+    window.addEventListener('scroll', update, { passive: true })
+    const ro = new ResizeObserver(update)
+    ro.observe(heroTextRef.current)
+    return () => {
+      window.removeEventListener('resize', update)
+      window.removeEventListener('scroll', update)
+      ro.disconnect()
+    }
   }, [insectCue])
 
   return (

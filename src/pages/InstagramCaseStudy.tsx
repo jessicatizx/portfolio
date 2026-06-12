@@ -113,13 +113,18 @@ export default function InstagramCaseStudy({ onBack, onNavigate }: Props) {
 
         {/* ── The goal ── */}
         <section className="py-16 border-t border-black/[0.07]">
-          <p className="font-hand text-[18px] text-ink-tertiary mb-8">The goal</p>
-            <div className="grid grid-cols-2 gap-16 items-start">
-            <h2 className="font-serif text-[clamp(22px,2.4vw,30px)] leading-snug tracking-[-0.03em] text-ink-primary">
-              Enable a clear and trustworthy transition out of and back into social connection
-            </h2>
+          <div className="grid grid-cols-2 gap-16 items-start">
             <div>
-              <p className="font-hand text-[18px] text-ink-tertiary mb-4">Context</p>
+              <p className="font-hand text-[18px] text-ink-tertiary mb-8">The goal</p>
+              <h2 className="font-serif text-[clamp(22px,2.4vw,30px)] leading-snug tracking-[-0.03em] text-ink-primary">
+                Enable a clear and trustworthy transition out of and back into social connection
+              </h2>
+            </div>
+            <div>
+              <p className="font-hand text-[18px] text-ink-tertiary mb-8">Context</p>
+              <p className="font-inter text-[15px] font-semibold leading-snug text-ink-primary mb-4">
+                Introducing implications of the world&apos;s first social media ban
+              </p>
               <p className="font-inter text-[15px] leading-relaxed text-ink-secondary">
                 For many teens, social media holds their connection to identity and friendships. In December 2025, the world's first social media ban took effect in Australia where every teen 16 and under, banned overnight. For social media companies, there was no precedent for this. No guidance on how to help hundreds of thousands of teens understand what was happening to their accounts, or what came next.{' '}
                 <strong className="font-semibold text-ink-primary">We were inventing the playbook.</strong>
@@ -130,38 +135,14 @@ export default function InstagramCaseStudy({ onBack, onNavigate }: Props) {
           {/* Problem */}
           <div className="mt-20">
             <p className="font-hand text-[18px] text-ink-tertiary mb-6">Problem</p>
-            <p className="font-inter text-[15px] leading-relaxed text-ink-secondary mb-10">
-              Unlike previous regulations that targeted individual features, the Australia social media ban introduced an entirely new operational change of bringing teens off the whole app entirely. Given that there was no such precedent for this, this invited the problem of...
+            <p className="font-inter text-[20px] font-semibold leading-snug tracking-[-0.02em] text-ink-primary mb-8">
+              Australia&apos;s social media ban required millions of teens to lose access overnight, but there was no precedent for communicating nor designing these account restrictions at this scale
             </p>
-            {/* Problem statement callout */}
-            <div style={{
-              background: 'linear-gradient(135deg, rgba(139,109,168,0.13) 0%, rgba(162,125,190,0.10) 100%)',
-              border: '1px solid rgba(139,109,168,0.22)',
-              borderRadius: 16,
-              padding: '40px 48px',
-              marginBottom: 36,
-              textAlign: 'center',
-            }}>
-              <p style={{
-                fontFamily: 'Inter, sans-serif',
-                fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: '0.10em',
-                textTransform: 'uppercase',
-                color: 'rgba(112,80,145,0.70)',
-                marginBottom: 18,
-              }}>Problem statement</p>
-              <p style={{
-                fontFamily: '"Fjord One", serif',
-                fontSize: 20,
-                fontWeight: 400,
-                lineHeight: 1.55,
-                color: '#2c1f38',
-                letterSpacing: '-0.01em',
-              }}>
-                How might we guide teens through temporary account restrictions in a way that feels clear, supportive and transparent?
-              </p>
-            </div>
+            <p className="font-inter text-[15px] leading-relaxed text-ink-secondary mb-10">
+              Unlike previous regulations that targeted individual features, the ban introduced an entirely new account state:{' '}
+              <em className="italic text-ink-primary">teens could no longer access the product at all</em>.
+              Without an established framework, users would potentially be left without clear answers about why access was removed, what would happen to their accounts, or when they could return. We needed to create a trustworthy transition experience from scratch while policy requirements were still evolving.
+            </p>
             <div className="mt-12">
               <p className="font-hand text-[18px] text-ink-tertiary mb-6">Constraints</p>
               <div className="flex flex-col gap-4">

@@ -24,12 +24,25 @@ function easeInOutCubic(t: number) {
 }
 
 /** Viewport coordinates — insect uses `position: fixed` so it is not clipped by hero overflow. */
-function cueAnchor(el: HTMLElement) {
-  const r = el.getBoundingClientRect()
-  return {
-    x: r.left + r.width / 2,
-    y: r.bottom - 6,
+export function measureHeroCueAnchor(el: HTMLElement) {
+  const rects = Array.from(el.getClientRects()).filter(r => r.width > 1 && r.height > 1)
+  if (rects.length === 0) {
+    const r = el.getBoundingClientRect()
+    return { x: r.left + r.width / 2, y: r.bottom - 6 }
   }
+  if (rects.length === 1) {
+    const r = rects[0]
+    return { x: r.left + r.width / 2, y: r.bottom - 6 }
+  }
+  let wSum = 0
+  let xSum = 0
+  let bottom = rects[0].bottom
+  for (const r of rects) {
+    xSum += (r.left + r.width / 2) * r.width
+    wSum += r.width
+    bottom = Math.max(bottom, r.bottom)
+  }
+  return { x: xSum / wSum, y: bottom - 6 }
 }
 
 function angleDeg(dx: number, dy: number) {
@@ -85,6 +98,10 @@ export function useHeroInsectTour({
     let phaseStart = 0
     let travelFrom = { x: 0, y: 0, rot: -12 }
     let pauseCue: HeroCueId | null = null
+    let ro: ResizeObserver | null = null
+    const onLayoutChange = () => {
+      /* cue positions are re-read every animation frame */
+    }
 
     const sleep = (ms: number) =>
       new Promise<void>(resolve => {
@@ -97,17 +114,20 @@ export function useHeroInsectTour({
         raf = requestAnimationFrame(tick)
       })
 
-    function getCues(): { id: HeroCueId; el: HTMLElement }[] {
+    function getCueEl(id: HeroCueId): HTMLElement | null {
       const root = containerRef.current
-      if (!root) return []
-      return HERO_CUE_ORDER.flatMap(id => {
-        const el = root.querySelector<HTMLElement>(`${cueSelector}[data-hero-cue="${id}"]`)
-        return el ? [{ id, el }] : []
-      })
+      if (!root) return null
+      return root.querySelector<HTMLElement>(`${cueSelector}[data-hero-cue="${id}"]`)
     }
 
-    function measureTarget(el: HTMLElement, fromX = travelFrom.x, fromY = travelFrom.y) {
-      const anchor = cueAnchor(el)
+    function getCueIds(): HeroCueId[] {
+      return HERO_CUE_ORDER.filter(id => getCueEl(id) !== null)
+    }
+
+    function measureTargetForId(id: HeroCueId, fromX = travelFrom.x, fromY = travelFrom.y) {
+      const el = getCueEl(id)
+      if (!el) return { x: fromX, y: fromY, rot: travelFrom.rot }
+      const anchor = measureHeroCueAnchor(el)
       const dx = anchor.x - fromX
       const dy = anchor.y - fromY
       return {
@@ -128,18 +148,18 @@ export function useHeroInsectTour({
       await sleep(initialDelay)
       if (!alive) return
 
-      let cues = getCues()
-      for (let i = 0; cues.length === 0 && i < 30 && alive; i += 1) {
+      let cueIds = getCueIds()
+      for (let i = 0; cueIds.length === 0 && i < 30 && alive; i += 1) {
         await sleep(100)
-        cues = getCues()
+        cueIds = getCueIds()
       }
 
       const container = containerRef.current
-      if (!container || cues.length === 0) return
+      if (!container || cueIds.length === 0) return
 
       await waitForLayout()
 
-      const first = measureTarget(cues[0].el)
+      const first = measureTargetForId(cueIds[0])
       travelFrom = { x: first.x - 40, y: first.y + 28, rot: first.rot - 18 }
       setTransform({ ...travelFrom, scale: 0.88, opacity: 1 })
 
@@ -185,22 +205,30 @@ export function useHeroInsectTour({
           raf = requestAnimationFrame(travelLoop)
         })
 
+      window.addEventListener('resize', onLayoutChange)
+      window.addEventListener('scroll', onLayoutChange, { passive: true })
+      if (typeof ResizeObserver !== 'undefined') {
+        ro = new ResizeObserver(onLayoutChange)
+        ro.observe(container)
+      }
+
       while (alive) {
-        const list = getCues()
+        const list = getCueIds()
         if (list.length === 0) break
 
-        const { id, el } = list[cueIndex % list.length]
+        const id = list[cueIndex % list.length]
 
         if (pauseCue) {
           onLeaveRef.current(pauseCue)
           pauseCue = null
         }
 
-        await animateTravel(() => measureTarget(el), travelDuration)
+        await waitForLayout()
+        await animateTravel(() => measureTargetForId(id), travelDuration)
 
         if (!alive) break
 
-        let target = measureTarget(el)
+        let target = measureTargetForId(id)
         phaseStart = performance.now()
         pauseCue = id
         onVisitRef.current(id, { x: target.x, y: target.y })
@@ -210,7 +238,7 @@ export function useHeroInsectTour({
             if (!alive) return
             const elapsed = now - phaseStart
             const bob = elapsed / 1000
-            const fresh = measureTarget(el)
+            const fresh = measureTargetForId(id)
             target = fresh
             onVisitRef.current(id, { x: fresh.x, y: fresh.y })
             setTransform({
@@ -258,6 +286,9 @@ export function useHeroInsectTour({
     return () => {
       alive = false
       cancelAnimationFrame(raf)
+      window.removeEventListener('resize', onLayoutChange)
+      window.removeEventListener('scroll', onLayoutChange)
+      ro?.disconnect()
       if (pauseCue) onLeaveRef.current(pauseCue)
     }
   }, [
